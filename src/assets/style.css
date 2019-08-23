@@ -1,0 +1,24 @@
+/*public style*/
+/**::-webkit-scrollbar {*/
+    /*width: 0;*/
+    /*height: 0;*/
+/*}*/
+
+.standMessage {
+    margin-top: 10px;
+}
+
+/* 全局样式 */
+.searchInput {
+    margin-top: 10px;
+  }
+
+.page {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    background: #f2f2f2;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
