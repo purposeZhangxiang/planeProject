@@ -43,13 +43,13 @@
         ></el-table-column>
         <el-table-column label="操作" width="232">
           <template slot-scope="scope">
-            <el-button size="mini" type="info" plain @click="updata(scope.$index, scope.row)">修改</el-button>
+            <el-button size="mini" plain @click="updata(scope.$index, scope.row)">修改</el-button>
             <el-button size="mini" type="danger" @click="deletes(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog :title="title" :visible.sync="centerDialogVisible" width="30%" center>
+    <el-dialog :title="title" :visible.sync="centerDialogVisible" width="30%">
       <span slot="footer" class="dialog-footer">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="人员姓名">
