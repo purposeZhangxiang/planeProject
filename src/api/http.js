@@ -26,8 +26,8 @@ const login = (apiName, method, data) => {
                 }
             })
             .catch(err => {
-                Message.error("登陆失败")
-                reject(err)
+                Message({ message: err.response.data.error_description, type: "error" });
+                return;
             })
 
     })
@@ -88,7 +88,7 @@ const sendRequest = (apiName, method, data, responseType = "json") => {
             })
             .catch(err => {
                 //错误提示
-                Message.error("请求失败");
+                Message.error(err);
                 reject(err)
             })
 
