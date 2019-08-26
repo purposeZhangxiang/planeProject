@@ -16,13 +16,14 @@ export default {
   data() {
     return {
       nowLocation: ["画线"],
-      chartLine: null
+      chartLine: null,
+      dealXAxis: [],
+      yAxis: []
     };
   },
   mounted() {
     this.renderTable(this.$route.query);
     this.getData(this.$route.query);
-    this.drawLineChart();
   },
   methods: {
     renderTable(options) {},
@@ -31,7 +32,26 @@ export default {
         BDBH: options.UNITNUMBER,
         CCBH: options.FACTORYNUMBER
       }).then(res => {
-        debugger;
+        let xAxis = [];
+        for (let val of res) {
+          xAxis.push(val.BCFXSJ);
+          this.yAxis.push(val.BCDLSS);
+        }
+        //deal x轴
+        for (let index in xAxis) {
+          if (index == 0) {
+            this.dealXAxis.push(xAxis[index]);
+          } else {
+            let sum = 0;
+            for (let i = index; i >= 0; i--) {
+              sum += xAxis[i];
+            }
+            this.dealXAxis.push(sum);
+          }
+        }
+        // console.log(this.dealXAxis);
+        // console.log(this.yAxis);
+        this.drawLineChart();
       });
     },
     drawLineChart() {
@@ -42,7 +62,7 @@ export default {
         name: "飞行总时间",
         nameLocation: "middle",
         boundaryGap: false,
-        data: [1, 2, 3, 4, 5, 6]
+        data: this.dealXAxis
       };
       //y轴
       let yAxis = {
@@ -55,7 +75,8 @@ export default {
           name: "单机当量损伤",
           type: "line",
           stack: "总量",
-          data: [120.22, 132.23, 101.342, 134.234, 90.234, 230.324, 210.234]
+          // data: [120.22, 132.23, 101.342, 134.234, 90.234, 230.324, 210.234]
+          data: this.yAxis
         }
       ];
       this.chartLine.setOption({
