@@ -114,10 +114,10 @@ export default {
                     name: '系统管理',
                     icon: 'el-icon-menu',
                     sonMenu: [
-                        {
-                            name: "菜单管理",
-                            router: { path: "/home/menuManagel" }
-                        },
+                        // {
+                        //     name: "菜单管理",
+                        //     router: { path: "/home/menuManagel" }
+                        // },
                         {
                             name: "部门管理",
                             router: { path: "/home/departmentManage" }

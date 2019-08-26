@@ -4,8 +4,8 @@
     <!-- 搜索框 -->
     <div class="serachInput">
       <el-form :inline="true" :model="searchInput" class="searchInput">
-        <el-form-item label="飞机编号">
-          <el-select multiple v-model="searchInput.factorynum">
+        <el-form-item>
+          <el-select clearable multiple v-model="searchInput.factorynum" placeholder="飞机编号">
             <el-option
               v-for="(item,index) in planeOptions"
               :key="index"
@@ -14,27 +14,29 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="部队编号">
-          <el-select v-model="searchInput.unitnumber">
+        <el-form-item>
+          <el-select clearable v-model="searchInput.unitnumber" placeholder="部队编号"> 
             <el-option v-for="(item,index) in unitOptions" :key="index" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
             v-model="searchInput.starttime"
             type="date"
-            placeholder="选择日期"
+            placeholder="开始时间"
+            clearable
           ></el-date-picker>
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="searchInput.endtime"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
             type="date"
-            placeholder="选择日期"
+            placeholder="结束时间"
+            clearable
           ></el-date-picker>
         </el-form-item>
         <el-form-item>

@@ -22,7 +22,7 @@
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
+        <!-- <el-table-column type="selection" width="55"></el-table-column> -->
         <el-table-column
           v-for="(item,index) in theadText"
           :prop="item.prop"
@@ -32,13 +32,8 @@
         <el-table-column label="所属人员" prop="user" :formatter="getfor"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="info" plain @click="edit(scope.$index, scope.row)">编辑</el-button>
-            <el-button
-              size="mini"
-              type="info"
-              plain
-              @click=" jobPlacent(scope.$index, scope.row)"
-            >设置人员</el-button>
+            <el-button size="mini" plain @click="edit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" plain @click=" jobPlacent(scope.$index, scope.row)">设置人员</el-button>
             <el-button
               size="mini"
               type="warning"
@@ -50,7 +45,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog :title="tiTitle" :visible.sync="dialogVisible" width="30%" center>
+    <el-dialog :title="tiTitle" :visible.sync="dialogVisible" width="30%" >
       <div class="standMessage">
         <div v-if="title == 'table'" class="standMessage">
           <el-table
@@ -87,7 +82,7 @@
         <el-button type="primary" @click="Psuccess">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog :title="tiTitle" :visible.sync="treeVisible" width="30%" center>
+    <el-dialog :title="tiTitle" :visible.sync="treeVisible" width="30%">
       <el-tree
         :data="dataTree"
         ref="treeForm"
@@ -301,7 +296,6 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-        center: true
       })
         .then(() => {
           this.$message({

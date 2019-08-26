@@ -148,7 +148,12 @@ export default {
       };
       this.getTable(json);
     },
-    handleLook(index, row) {}
+    handleLook(index, row) {
+      this.$router.push({
+        path: "/home/drawgLine",
+        query: row
+      });
+    }
   }
 };
 </script>

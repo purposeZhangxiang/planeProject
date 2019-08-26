@@ -4,13 +4,7 @@
     <commomBread :nowLocation="nowLocation"></commomBread>
     <!-- 搜索框 -->
     <div class="serachInput">
-      <el-form :inline="true" :model="searchInput" class="searchInput">
-        <el-form-item>
-          <el-button type="primary" @click="add">新增</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="danger" @click="deleteSome">批量删除</el-button>
-        </el-form-item>
+      <el-form :inline="true" :model="searchInput" class="searchInput" clearable>
         <el-form-item label="筛选条件">
           <el-select v-model="searchInput.condition">
             <el-option
@@ -28,10 +22,16 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="searchInput.keyword" placeholder="字段"></el-input>
+          <el-input v-model="searchInput.keyword" placeholder="字段" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">搜索</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="add">新增</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="danger" @click="deleteSome">批量删除</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -219,7 +219,7 @@ export default {
       deaufltPage: 1, //默认展示页码
       currentPage: 1, //当前页
       currentSize: 10, //当前展示条数
-      pageSize: [10, 15, 20], //每页展示
+      pageSize: [10, 15, 20] //每页展示
     };
   },
   components: {

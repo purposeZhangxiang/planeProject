@@ -4,14 +4,9 @@
     <!-- 搜索框 -->
     <div class="serachInput">
       <el-form :inline="true" :model="searchInput" class="searchInput">
-        <el-form-item>
-          <el-button type="primary" @click="add">新增</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="danger" @click="deleteSome">批量删除</el-button>
-        </el-form-item>
+        
         <el-form-item label="筛选条件">
-          <el-select v-model="searchInput.condition">
+          <el-select v-model="searchInput.condition" clearable>
             <el-option
               v-for="(item,index) in theadText"
               :key="index"
@@ -27,10 +22,16 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="searchInput.keyword" placeholder="字段"></el-input>
+          <el-input v-model="searchInput.keyword" placeholder="字段" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">搜索</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="add">新增</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="danger" @click="deleteSome">批量删除</el-button>
         </el-form-item>
       </el-form>
     </div>

@@ -2,10 +2,10 @@ const routers = [{
     path: 'departmentManage',
     component: () => import('@/components/views/systemManage/departmentManage.vue'),
 },
-{
-    path: 'menuManagel',
-    component: () => import('@/components/views/systemManage/menuManagel.vue'),
-},
+// {
+//     path: 'menuManagel',
+//     component: () => import('@/components/views/systemManage/menuManagel.vue'),
+// },
 {
     path: 'flightField',
     component: () => import('@/components/views/systemManage/flightField.vue'),

@@ -196,17 +196,16 @@ export default {
 .progress {
   background: #f0f0f0;
   width: 100%;
-  height: 240px;
   margin-top: 20px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   .step {
     width: 200px;
-    height: 200px;
+    padding: 10px 0;
+    text-align: center;
     img {
-      width: 100%;
-      height: 180px;
+      max-width: 100%;
     }
     .text {
       height: 20px;
@@ -218,7 +217,6 @@ export default {
 
 .upload {
   width: 100%;
-  height: 400px;
   margin-top: 20px;
   justify-content: center;
   align-items: center;
@@ -226,13 +224,17 @@ export default {
   .item {
     width: 40%;
     height: 100%;
+    display: inline-block;
+    margin: 0 30px;
     .select {
       margin: 10px 0;
     }
   }
   .dataImg {
     text-align: center;
+    display: inline-block;
     img {
+      max-width: 100%;
       vertical-align: middle;
     }
   }
