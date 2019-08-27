@@ -75,15 +75,22 @@
         class="stand-alone"
         label-width="130px"
         :model="formLabelAlign"
+        :rules="rules"
+        ref="ruleForm"
       >
         <el-col :span="12">
-          <el-form-item label="出厂编号">
+          <el-form-item label="出厂编号" prop="factorynumber">
             <el-input v-model="formLabelAlign.factorynumber"></el-input>
           </el-form-item>
-          <el-form-item label="出厂日期">
-            <el-date-picker v-model="formLabelAlign.deliverytime" type="date" placeholder="选择日期"></el-date-picker>
+          <el-form-item label="出厂日期" prop="deliverytime">
+            <el-date-picker
+              v-model="formLabelAlign.deliverytime"
+              type="date"
+              placeholder="选择日期"
+              style="width:100%"
+            ></el-date-picker>
           </el-form-item>
-          <el-form-item label="所属部队名称">
+          <el-form-item label="所属部队名称" prop>
             <el-select v-model="value" placeholder="请选择" style="width: 100%">
               <el-option
                 v-for="item in options"
@@ -93,16 +100,16 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="所属中队">
+          <el-form-item label="所属中队" prop="unitmiddle">
             <el-input v-model="formLabelAlign.unitmiddle"></el-input>
           </el-form-item>
-          <el-form-item label="标准作战重量(kg)">
+          <el-form-item label="标准作战重量(kg)" prop="fightweight">
             <el-input v-model="formLabelAlign.fightweight"></el-input>
           </el-form-item>
-          <el-form-item label="空机重量(kg)">
+          <el-form-item label="空机重量(kg)" prop="emptyweight">
             <el-input v-model="formLabelAlign.emptyweight"></el-input>
           </el-form-item>
-          <el-form-item label="S-N指数">
+          <el-form-item label="S-N指数" prop="sn">
             <el-input v-model="formLabelAlign.sn"></el-input>
           </el-form-item>
         </el-col>
@@ -118,7 +125,12 @@
             </el-select>
           </el-form-item>
           <el-form-item label="服役日期">
-            <el-date-picker v-model="formLabelAlign.servicedate" type="date" placeholder="选择日期"></el-date-picker>
+            <el-date-picker
+              v-model="formLabelAlign.servicedate"
+              type="date"
+              placeholder="选择日期"
+              style="width:100%"
+            ></el-date-picker>
           </el-form-item>
           <el-form-item label="所属部队编号">
             <el-input v-model="formLabelAlign.unitnumber"></el-input>
@@ -211,6 +223,100 @@ export default {
         maxoverdrive: "",
         maxdesignoverdrive: "",
         sn: ""
+      },
+      //表单验证规则
+      rules: {
+        factorynumber: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        plantypeid: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        deliverytime: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        servicedate: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        unitnumber: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        usernumber: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        unitmiddle: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        fightweight: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        emptyweight: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        strengthweight: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        maxoverdrive: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        maxdesignoverdrive: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ],
+        sn: [
+          {
+            required: true,
+            message: "请输入飞机型号",
+            trigger: "blur"
+          }
+        ]
       },
       totalData: 10,
       multipleSelection: [],

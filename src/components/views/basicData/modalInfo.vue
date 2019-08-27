@@ -4,7 +4,6 @@
     <!-- 搜索框 -->
     <div class="serachInput">
       <el-form :inline="true" :model="searchInput" class="searchInput">
-        
         <el-form-item label="筛选条件">
           <el-select v-model="searchInput.condition" clearable>
             <el-option
@@ -67,26 +66,32 @@
       :title="dialogTitle"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
-      width="50%"
+      width="40%"
       @close="handleClose"
     >
-      <el-form label-position="right" label-width="110px" :model="formLabelAlign">
-        <el-form-item label="飞机型号">
+      <el-form
+        label-position="right"
+        label-width="120px"
+        :model="formLabelAlign"
+        :rules="rules"
+        ref="ruleForm"
+      >
+        <el-form-item label="飞机型号" prop="planeType">
           <el-input v-model="formLabelAlign.planeType"></el-input>
         </el-form-item>
-        <el-form-item label="中文名称">
+        <el-form-item label="中文名称" prop="chinaName">
           <el-input v-model="formLabelAlign.chinaName"></el-input>
         </el-form-item>
-        <el-form-item label="结构状态编号">
+        <el-form-item label="结构状态编号" prop="num">
           <el-input v-model="formLabelAlign.num"></el-input>
         </el-form-item>
-        <el-form-item label="结构状态描述">
+        <el-form-item label="结构状态描述" prop="stateDescribe">
           <el-input v-model="formLabelAlign.stateDescribe"></el-input>
         </el-form-item>
-        <el-form-item label="空机重量">
+        <el-form-item label="空机重量" prop="emptyWeight">
           <el-input v-model="formLabelAlign.emptyWeight"></el-input>
         </el-form-item>
-        <el-form-item label="型号描述">
+        <el-form-item label="型号描述" prop="typeDescribe">
           <el-input v-model="formLabelAlign.typeDescribe"></el-input>
         </el-form-item>
       </el-form>
@@ -150,6 +155,28 @@ export default {
         emptyWeight: "",
         typeDescribe: ""
       },
+      //表单验证规则
+      rules: {
+        planeType: [
+          { required: true, message: "请输入飞机型号", trigger: "blur" }
+        ],
+        chinaName: [
+          { required: true, message: "请输入中文名称", trigger: "blur" }
+        ],
+        num: [
+          { required: true, message: "请输入结构状态编号", trigger: "blur" }
+        ],
+        stateDescribe: [
+          { required: true, message: "请输入结构状态描述", trigger: "blur" }
+        ],
+        emptyWeight: [
+          { required: true, message: "请输入空机重量", trigger: "blur" }
+        ],
+        typeDescribe: [
+          { required: true, message: "请输入型号描述", trigger: "blur" }
+        ]
+      },
+
       multipleSelection: [],
       dialogFormVisible: false,
       dialogTitle: "",
@@ -188,11 +215,12 @@ export default {
     },
     Add(data) {
       http("/planeType/addPlaneType", "post", data).then(res => {
-        this.getTableData();
         this.$message({
           message: "添加成功",
           type: "success"
         });
+        this.getTableData();
+        this.dialogFormVisible = !this.dialogFormVisible;
       });
     },
     Search(currentPage, pageSize, data) {
@@ -214,21 +242,17 @@ export default {
     },
     Look(id) {
       http("/planeType/getPlaneTypeById", "post", { id: id }).then(res => {
-        // if (typeof res === "object") {
-        //   this.editData = res;
-        // } else {
-        //   this.editData = JSON.parse(res);
-        // }
         Object.assign(this.formLabelAlign, res);
       });
     },
     Edit(data) {
       http("/planeType/editPlaneType", "post", data).then(res => {
-        this.getTableData();
         this.$message({
           message: "修改成功",
           type: "success"
         });
+        this.getTableData();
+        this.dialogFormVisible = !this.dialogFormVisible;
       });
     },
     DeleteSingel(id) {
