@@ -41,6 +41,7 @@ export default {
     add() {
       this.dialogFormVisible = !this.dialogFormVisible;
       this.dialogTitle = "新增";
+
     },
     deleteSome() {
       if (this.multipleSelection.length == 0) {
@@ -95,6 +96,7 @@ export default {
     dialogOk() {
       if (this.dialogTitle == "新增") {
         //表单验证阶段
+        debugger
         this.$refs["ruleForm"].validate((valid) => {
           if (valid) {
             this.Add(this.formLabelAlign);
@@ -164,6 +166,9 @@ export default {
         }
       })
     },
+    handleClose() {
+      this.$refs["ruleForm"].clearValidate();
+    }
 
     // clearFormStatus() {
     //     //置空表单

@@ -76,7 +76,6 @@ const sendRequest = (apiName, method, data, responseType = "json") => {
                         resolve(res.data.data)
                     }
                     else if (config.responseType == "blob") {
-                        debugger
                         downloadExcel(res.data);
                     }
                     else {

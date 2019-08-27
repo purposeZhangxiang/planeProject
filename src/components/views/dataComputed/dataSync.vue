@@ -4,19 +4,19 @@
     <!-- 搜索框 -->
     <div class="serachInput">
       <el-form :inline="true" :model="searchInput" class="searchInput">
+        <el-form-item label="部队编号">
+          <el-select clearable v-model="searchInput.unitnumber" placeholder="部队编号">
+            <el-option v-for="(item,index) in unitOptions" :key="index" :label="item" :value="item"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
-          <el-select clearable multiple v-model="searchInput.factorynum" placeholder="飞机编号" > 
+          <el-select clearable multiple v-model="searchInput.factorynum" placeholder="飞机编号">
             <el-option
               v-for="(item,index) in planeOptions"
               :key="index"
               :label="item"
               :value="item"
             ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-select clearable v-model="searchInput.unitnumber" placeholder="部队编号"> 
-            <el-option v-for="(item,index) in unitOptions" :key="index" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -100,7 +100,7 @@ export default {
         { label: "部队编号", prop: "bdbh" },
         { label: "本次飞行时间", prop: "bcfxsj" },
         { label: "本次当量损伤", prop: "bcdlss" },
-        { label: "起飞时间(h)", prop: "qfsj" },
+        { label: "起飞时间", prop: "qfsj" },
         { label: "起落编号", prop: "qlbh" },
         { label: "飞参数据地址", prop: "fcsjwjdz" }
       ],
@@ -119,6 +119,8 @@ export default {
       // 部队编号
       http("/data/getunitnumber", "get").then(res => {
         this.unitOptions = res;
+        //setting deafult
+        this.searchInput.unitnumber=this.unitOptions[0];
       });
     },
     search() {

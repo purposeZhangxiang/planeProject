@@ -36,6 +36,7 @@ axios.interceptors.response.use(response => {
   endLoading();
   return response
 }, err => {
+  endLoading();
   return Promise.reject(err);
 });
 

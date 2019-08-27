@@ -178,6 +178,7 @@ export default {
       // }, 2000);
     },
     handleSuccess(res, file, fileList) {
+      debugger;
       this.$router.push("/home/computedResult");
     },
     handleError(err, file, fileList) {

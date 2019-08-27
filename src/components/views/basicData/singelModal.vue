@@ -90,7 +90,7 @@
               style="width:100%"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="所属部队名称" prop>
+          <el-form-item label="所属部队名称" prop="">
             <el-select v-model="value" placeholder="请选择" style="width: 100%">
               <el-option
                 v-for="item in options"
@@ -229,14 +229,14 @@ export default {
         factorynumber: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         plantypeid: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
@@ -250,70 +250,70 @@ export default {
         servicedate: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         unitnumber: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         usernumber: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         unitmiddle: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         fightweight: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         emptyweight: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         strengthweight: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         maxoverdrive: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         maxdesignoverdrive: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ],
         sn: [
           {
             required: true,
-            message: "请输入飞机型号",
+            message: "此为必填项",
             trigger: "blur"
           }
         ]

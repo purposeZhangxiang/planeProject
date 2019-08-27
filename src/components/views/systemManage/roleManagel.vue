@@ -2,12 +2,12 @@
   <div>
     <bread :nowLocation="nowLocation"></bread>
     <div class="standMessage">
-      <el-form :inline="true" :model="form" class="demo-form-inline"  ref="form">
-        <el-form-item label="角色名称" >
-          <el-input clearable size="middle" v-model="form.username" placeholder="请输入角色名称"  ></el-input>
+      <el-form :inline="true" :model="form" class="demo-form-inline" ref="form">
+        <el-form-item label="角色名称">
+          <el-input clearable size="middle" v-model="form.username" placeholder="请输入角色名称"></el-input>
         </el-form-item>
-        <el-form-item label="角色备注" >
-          <el-input clearable size="middle" v-model="form.remarks" placeholder="可选输入角色备注" ></el-input>
+        <el-form-item label="角色备注">
+          <el-input clearable size="middle" v-model="form.remarks" placeholder="可选输入角色备注"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch()">搜索</el-button>
@@ -31,9 +31,11 @@
           :prop="item.prop"
           :label="item.name"
           :key="index"
+          :show-overflow-tooltip="true"
+          width="200"
         ></el-table-column>
-        <el-table-column label="所属人员" prop="user" :formatter="getfor"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="所属人员" prop="user" :formatter="getfor" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="操作" width="340">
           <template slot-scope="scope">
             <el-button size="mini" plain @click="edit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" plain @click=" jobPlacent(scope.$index, scope.row)">设置人员</el-button>
@@ -48,8 +50,9 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog :title="tiTitle" :visible.sync="dialogVisible" width="30%" >
+    <el-dialog :title="tiTitle" :visible.sync="dialogVisible" width="30%">
       <div class="standMessage">
+        <!--数据表格对话框-->
         <div v-if="title == 'table'" class="standMessage">
           <el-table
             ref="table"
@@ -57,7 +60,7 @@
             :data="personData"
             class="multipleTable"
             tooltip-effect="dark"
-            style="width: 100%"
+            style="width: 100%;max-height:400px;overflow:auto"
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="55"></el-table-column>
@@ -69,8 +72,9 @@
             ></el-table-column>
           </el-table>
         </div>
+        <!--角色编辑和新增对话框-->
         <div v-else class="standMessage">
-          <el-form ref="form" label-width="80px" :model="formLabelAlign"   :rules="rules">
+          <el-form ref="form" label-width="80px" :model="formLabelAlign" :rules="rules">
             <el-form-item label="角色名称" prop="name">
               <el-input v-model="formLabelAlign.name"></el-input>
             </el-form-item>
@@ -95,6 +99,7 @@
         show-checkbox
         node-key="id"
         :props="defaultProps"
+        :default-checked-keys="dateTreeSeleect"
       ></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="treeVisible = false">取 消</el-button>
@@ -132,13 +137,20 @@ export default {
       personData: [],
       rowData: [],
       theadText: [
-        { name: "角色名称", prop: "name" },
-        { name: "角色备注", prop: "remarks" }
+        {
+          name: "角色名称",
+          prop: "name"
+        },
+        {
+          name: "角色备注",
+          prop: "remarks"
+        }
       ],
       personText: [],
       nowLocation: ["系统管理", "角色管理"],
       multipleSelection: [],
       dataTree: [],
+      dateTreeSeleect: [],
       defaultProps: {
         children: "children",
         label: "NAME"
@@ -151,11 +163,25 @@ export default {
         name: "",
         remarks: ""
       },
-      rules:{
-        name:[{required:true,message:"角色名必填"},{
-          max:32,message:"最多输入32字符",trigger: "blur"
-        }],
-        remarks:[{max:256,message:"最多输入256个字符",trigger:"blur"}]
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "角色名必填"
+          },
+          {
+            max: 32,
+            message: "最多输入32字符",
+            trigger: "blur"
+          }
+        ],
+        remarks: [
+          {
+            max: 256,
+            message: "最多输入256个字符",
+            trigger: "blur"
+          }
+        ]
       }
     };
   },
@@ -179,12 +205,12 @@ export default {
       });
     },
     //搜索
-    handleSearch(currentPage=1,pageSize=10){
+    handleSearch(currentPage = 1, pageSize = 10) {
       let json = {
         currentPage,
         pageSize,
-        name:this.form.username,
-        remarks:this.form.remarks,
+        name: this.form.username,
+        remarks: this.form.remarks
       };
       http("/kwrole/findAllPageByConditions", "post", json).then(res => {
         this.tableData = res.records;
@@ -193,8 +219,10 @@ export default {
     },
     //新增
     submitForm() {
-      this.edit(-1,{});
       this.tiTitle = "新增";
+      this.form = {};
+      this.dialogVisible = true;
+      this.$refs.form.clearValidate();
     },
     //设置人员
     jobPlacent(index, row) {
@@ -203,10 +231,19 @@ export default {
       this.id = row.id;
       this.rowData = row;
       this.dialogVisible = true;
-      let json = { currentPage: 1, pageSize: 100000 };
+      let json = {
+        currentPage: 1,
+        pageSize: 100000
+      };
       this.personText = [
-        { name: "人员姓名", prop: "username" },
-        { name: "登陆账号", prop: "account" }
+        {
+          name: "人员姓名",
+          prop: "username"
+        },
+        {
+          name: "登陆账号",
+          prop: "account"
+        }
       ];
       http("/user/findAllPageByConditions", "post", json).then(res => {
         this.personData = res.records;
@@ -236,32 +273,39 @@ export default {
         };
       if (this.title == "table") {
         http("/kwrole/updateKwroleuser", "post", tableJson).then(res => {
-          if (res == "修改人员成功！") {
-            this.dialogVisible = false;
-            this.getTableData();
-            this.$message({ message: res, type: "success"});
-          }
+          this.dialogVisible = false;
+          this.getTableData();
+          this.$message({
+            message: res,
+            type: "success"
+          });
         });
       } else {
-        this.$refs.form.validate(validate=>{
-            if(!validate){
-                return this.$message("请确认输入的数据正确后,再点击确定按钮","error");
-            }
-            var call = ()=>{
-                  this.dialogVisible = false;
-                  this.getTableData();
-                  this.$message({ message: res, type: "success" });
-            }
-            if(this.rowData.name){
-              http("/kwrole/editKwrole", "post", editJson).then(res => {
-                 res == "修改成功！" && call(res);
-              });
-            }else{
-              http("/kwrole/addKwrole", "post", editJson).then(res => {
-                res == "添加成功！" && call(res);
-              });
-            }
-        })
+        this.$refs.form.validate(validate => {
+          if (!validate) {
+            return this.$message(
+              "请确认输入的数据正确后,再点击确定按钮",
+              "error"
+            );
+          }
+          var call = () => {
+            this.dialogVisible = false;
+            this.getTableData();
+            this.$message({
+              message: res,
+              type: "success"
+            });
+          };
+          if (this.rowData.name) {
+            http("/kwrole/editKwrole", "post", editJson).then(res => {
+              call(res);
+            });
+          } else {
+            http("/kwrole/addKwrole", "post", editJson).then(res => {
+              call(res);
+            });
+          }
+        });
       }
     },
     //复选框回显
@@ -287,6 +331,7 @@ export default {
       this.treeVisible = true;
       http("/kwpermission/findpertree", "post").then(res => {
         this.dataTree = res;
+        http("/kwpermission/findPer", "post").then(res1 => {});
       });
     },
     editSuccess() {
@@ -295,9 +340,11 @@ export default {
         perid: this.checkedId
       };
       http("/kwrole/updateKwroleper", "post", json).then(res => {
-        if (res == "修改角色权限成功！") {
-          this.$message({ message: res, type: "success" });
-        }
+        this.$message({
+          message: res,
+          type: "success"
+        });
+        this.treeVisible = false;
       });
     },
     handleClick(data, checked) {
@@ -317,7 +364,7 @@ export default {
       this.$confirm(`删除角色【${row.name}】吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           this.$message({
@@ -343,8 +390,14 @@ export default {
       this.formLabelAlign.name = row.name;
       this.formLabelAlign.remarks = row.remarks;
       this.personText = [
-        { name: "角色名称", prop: "name" },
-        { name: "角色备注", prop: "remarks" }
+        {
+          name: "角色名称",
+          prop: "name"
+        },
+        {
+          name: "角色备注",
+          prop: "remarks"
+        }
       ];
     },
     getfor(row, column) {

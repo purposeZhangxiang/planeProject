@@ -170,7 +170,8 @@ export default {
           { required: true, message: "请输入结构状态描述", trigger: "blur" }
         ],
         emptyWeight: [
-          { required: true, message: "请输入空机重量", trigger: "blur" }
+          { required: true, message: "请输入空机重量", trigger: "blur" },
+          { pattern: /^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$/,message:'请输入正数', trigger: "blur" }
         ],
         typeDescribe: [
           { required: true, message: "请输入型号描述", trigger: "blur" }
