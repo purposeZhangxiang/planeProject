@@ -88,19 +88,31 @@ export default {
         this.formLabelAlign[key] = "";
       }
       //置空fileList
-      if(this.hasOwnProperty("fileList")){
-        this.fileList=[];
+      if (this.hasOwnProperty("fileList")) {
+        this.fileList = [];
       }
     },
     dialogOk() {
       if (this.dialogTitle == "新增") {
-        this.Add(this.formLabelAlign);
+        //表单验证阶段
+        this.$refs["ruleForm"].validate((valid) => {
+          if (valid) {
+            alert('验证通过!');
+            this.Add(this.formLabelAlign);
+          } else {
+            return false;
+          }
+        });
       } else if (this.dialogTitle == "编辑") {
-        this.Edit(this.formLabelAlign);
-      } else {
-
+        this.$refs["ruleForm"].validate((valid) => {
+          if (valid) {
+            alert('验证通过!');
+            this.Edit(this.formLabelAlign);
+          } else {
+            return false;
+          }
+        });
       }
-      this.dialogFormVisible = !this.dialogFormVisible;
     },
     handleSizeChange(val) {
       this.currentSize = val;
@@ -145,7 +157,7 @@ export default {
     },
     uploadSucc(res, file, fileList) {
       this.uploadImgIds = []; //!必须置空,否则会叠加之前已经上传过的图
-      
+
       fileList.forEach(element => {
         if (element.hasOwnProperty("response")) {
           this.uploadImgIds.push(element.response.data);

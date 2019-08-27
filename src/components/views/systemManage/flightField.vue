@@ -5,7 +5,7 @@
     <div class="operated">
       <el-form :inline="true">
         <el-form-item label="批量设置采样率">
-          <el-input v-model="global"></el-input>
+          <el-input v-model="global" type="number"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="setting">设置</el-button>
@@ -34,23 +34,23 @@
     </el-table>
     <!-- dialog -->
     <el-dialog title="修改" :visible.sync="showDialog">
-      <el-form :model="dialogForm">
-        <el-form-item label="名称" label-width="120px">
+      <el-form :model="dialogForm" :rules="rules" ref="ruleForm">
+        <el-form-item label="名称" label-width="120px" prop="mingchen">
           <el-input v-model="dialogForm.mingchen"></el-input>
         </el-form-item>
-        <el-form-item label="显示名" label-width="120px">
+        <el-form-item label="显示名" label-width="120px" prop="xianshiming">
           <el-input v-model="dialogForm.xianshiming"></el-input>
         </el-form-item>
-        <el-form-item label="对应列数" label-width="120px">
+        <el-form-item label="对应列数" label-width="120px" prop="duiyinglie">
           <el-input type="number" v-model="dialogForm.duiyinglie"></el-input>
         </el-form-item>
-        <el-form-item label="采样率" label-width="120px">
+        <el-form-item label="采样率" label-width="120px" prop="caiyanglv">
           <el-input type="number" v-model="dialogForm.caiyanglv"></el-input>
         </el-form-item>
-        <el-form-item label="超限失真上限" label-width="120px">
+        <el-form-item label="超限失真上限" label-width="120px" prop="cxshizhensx">
           <el-input type="number" v-model="dialogForm.cxshizhensx"></el-input>
         </el-form-item>
-        <el-form-item label="超限失真下限" label-width="120px">
+        <el-form-item label="超限失真下限" label-width="120px" prop="cxshizhenxx">
           <el-input type="number" v-model="dialogForm.cxshizhenxx"></el-input>
         </el-form-item>
         <el-form-item label="变化率失真" label-width="120px">
@@ -84,6 +84,34 @@ export default {
         cxshizhensx: "",
         cxshizhenxx: "",
         bhlshizhensx: ""
+      },
+      rules: {
+        mingchen: [
+          { required: true, message: "请输入飞机型号", trigger: "blur" }
+        ],
+        xianshiming: [
+          { required: true, message: "请输入飞机型号", trigger: "blur" }
+        ],
+        duiyinglie: [
+          { required: true, message: "请输入飞机型号", trigger: "blur" }
+        ],
+        caiyanglv: [
+          { required: true, message: "请输入飞机型号", trigger: "blur" },
+          {
+            pattern: /^[1-9]\d*$/,
+            message: "正整数警告",
+            trigger: "blur"
+          }
+        ],
+        cxshizhensx: [
+          { required: true, message: "请输入飞机型号", trigger: "blur" }
+        ],
+        cxshizhenxx: [
+          { required: true, message: "请输入飞机型号", trigger: "blur" }
+        ],
+        bhlshizhensx: [
+          { required: true, message: "请输入飞机型号", trigger: "blur" }
+        ]
       }
     };
   },
