@@ -35,7 +35,7 @@
         <div class="select">
           <el-form>
             <el-form-item label="部队编号">
-              <el-select v-model="unitnumber">
+              <el-select v-model="unitnumber" @change="selectChange">
                 <el-option v-for="item in unitArr" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
@@ -96,7 +96,6 @@ export default {
      */
     return {
       nowLocation: ["数据导入计算"],
-      // testServer: "https://jsonplaceholder.typicode.com/posts/",
       unitnumber: "",
       unitArr: [],
       action: `${baseUrl}/data/inputdata`,
@@ -124,42 +123,24 @@ export default {
      * @method
      *
      */
-    // initWebsocket() {
-    //   this.websocket = new WebSocket(wsUrl);
-    //   this.websocket.onopen = this.websocketonopen;
-    //   this.websocket.onerror = this.websocketonerror;
-    //   this.websocket.onmessage = this.websocketonmessage;
-    // },
-    // closeWebsocket() {},
-    // websocketonopen() {
-    //   console.log("websocket连接成功");
-    // },
-    // websocketonerror(e) {
-    //   console.log("websocket报错");
-    // },
-    // websocketonmessage(e) {
-    //   console.log(e.data);
-    // },
     getUnitNumber() {
       http("/data/getunitnumber", "get").then(res => {
         this.unitArr = res;
         this.unitnumber = res[0]; //设置默认值
+        this.uploadData.unitnumber = res[0];
       });
+    },
+    selectChange(val) {
+      this.uploadData.unitnumber = val;
     },
     handleBeforeUpload(file) {
       let isTxt =
         file.type == "text/plain" || file.type == "application/zip"
           ? true
           : false;
-      // let size = file.size / 1024 / 1024 < 1;
       if (!isTxt) {
         this.$message.error("上传文件只能是 TXT/ZIP 格式!");
       }
-      // if (!size) {
-      //   this.$message.error("上传文件大小不能超过 1MB!");
-      // }
-      // return isXlsx && size;
-      this.uploadData = { unitnumber: this.unitnumber };
       return isTxt;
     },
     handleRemove(file, fileList) {},
@@ -179,7 +160,13 @@ export default {
     },
     handleSuccess(res, file, fileList) {
       debugger;
-      this.$router.push("/home/computedResult");
+      if (res.code == "90000003") {
+        this.$message.warning(res.msg);
+      } else if (res.result == "0000") {
+        this.$router.push({ path: "/home/computedResult", query: res.data });
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     handleError(err, file, fileList) {
       this.$message.error("上传失败,请重试");

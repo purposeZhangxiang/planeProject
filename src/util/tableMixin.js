@@ -96,7 +96,6 @@ export default {
     dialogOk() {
       if (this.dialogTitle == "新增") {
         //表单验证阶段
-        debugger
         this.$refs["ruleForm"].validate((valid) => {
           if (valid) {
             this.Add(this.formLabelAlign);

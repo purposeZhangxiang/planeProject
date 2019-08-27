@@ -296,7 +296,7 @@ export default {
               type: "success"
             });
           };
-          if (this.rowData.name) {
+          if (this.rowData.id) {
             http("/kwrole/editKwrole", "post", editJson).then(res => {
               call(res);
             });

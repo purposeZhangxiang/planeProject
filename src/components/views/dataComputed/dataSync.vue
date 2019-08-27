@@ -107,10 +107,18 @@ export default {
       action: `${baseUrl}/data/updata`
     };
   },
+  created(){
+    // this.getData();
+  },
   mounted() {
     this.getSelectOptions();
   },
   methods: {
+    getData(){
+      http("","",).then(res=>{
+
+      })
+    },
     getSelectOptions() {
       // 飞机编号
       http("/data/getfactorynumber", "get").then(res => {
