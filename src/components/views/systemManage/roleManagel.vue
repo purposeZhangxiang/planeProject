@@ -2,12 +2,15 @@
   <div>
     <bread :nowLocation="nowLocation"></bread>
     <div class="standMessage">
-      <el-form :inline="true" :model="form" class="demo-form-inline">
-        <el-form-item label="角色名称">
-          <el-input clearable size="middle" v-model="form.username" placeholder="请输入角色名称"></el-input>
+      <el-form :inline="true" :model="form" class="demo-form-inline"  ref="form">
+        <el-form-item label="角色名称" >
+          <el-input clearable size="middle" v-model="form.username" placeholder="请输入角色名称"  ></el-input>
         </el-form-item>
-        <el-form-item label="备注">
-          <el-input clearable size="middle" v-model="form.remarks" placeholder="可选输入备注"></el-input>
+        <el-form-item label="角色备注" >
+          <el-input clearable size="middle" v-model="form.remarks" placeholder="可选输入角色备注" ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch()">搜索</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm()">新增</el-button>
@@ -67,11 +70,11 @@
           </el-table>
         </div>
         <div v-else class="standMessage">
-          <el-form ref="form" label-width="80px" :model="formLabelAlign">
-            <el-form-item label="角色名称">
+          <el-form ref="form" label-width="80px" :model="formLabelAlign"   :rules="rules">
+            <el-form-item label="角色名称" prop="name">
               <el-input v-model="formLabelAlign.name"></el-input>
             </el-form-item>
-            <el-form-item label="角色备注">
+            <el-form-item label="角色备注" prop="remarks">
               <el-input v-model="formLabelAlign.remarks"></el-input>
             </el-form-item>
           </el-form>
@@ -147,6 +150,12 @@ export default {
       formLabelAlign: {
         name: "",
         remarks: ""
+      },
+      rules:{
+        name:[{required:true,message:"角色名必填"},{
+          max:32,message:"最多输入32字符",trigger: "blur"
+        }],
+        remarks:[{max:256,message:"最多输入256个字符",trigger:"blur"}]
       }
     };
   },
@@ -169,22 +178,23 @@ export default {
         this.totalData = res.total;
       });
     },
+    //搜索
+    handleSearch(currentPage=1,pageSize=10){
+      let json = {
+        currentPage,
+        pageSize,
+        name:this.form.username,
+        remarks:this.form.remarks,
+      };
+      http("/kwrole/findAllPageByConditions", "post", json).then(res => {
+        this.tableData = res.records;
+        this.totalData = res.total;
+      });
+    },
     //新增
     submitForm() {
-      if (this.form.username == "" && this.form.remarks == "") {
-        this.$message({ message: "请输入角色名称！", type: "warning" });
-        return;
-      }
-      let json = {
-        name: this.form.username,
-        remarks: this.form.remarks
-      };
-      http("/kwrole/addKwrole", "post", json).then(res => {
-        if (res == "添加成功！") {
-          this.getTableData();
-          this.$message({ message: res, type: "success" });
-        }
-      });
+      this.edit(-1,{});
+      this.tiTitle = "新增";
     },
     //设置人员
     jobPlacent(index, row) {
@@ -229,17 +239,29 @@ export default {
           if (res == "修改人员成功！") {
             this.dialogVisible = false;
             this.getTableData();
-            this.$message({ message: res, type: "success" });
+            this.$message({ message: res, type: "success"});
           }
         });
       } else {
-        http("/kwrole/editKwrole", "post", editJson).then(res => {
-          if (res == "修改成功！") {
-            this.dialogVisible = false;
-            this.getTableData();
-            this.$message({ message: res, type: "success" });
-          }
-        });
+        this.$refs.form.validate(validate=>{
+            if(!validate){
+                return this.$message("请确认输入的数据正确后,再点击确定按钮","error");
+            }
+            var call = ()=>{
+                  this.dialogVisible = false;
+                  this.getTableData();
+                  this.$message({ message: res, type: "success" });
+            }
+            if(this.rowData.name){
+              http("/kwrole/editKwrole", "post", editJson).then(res => {
+                 res == "修改成功！" && call(res);
+              });
+            }else{
+              http("/kwrole/addKwrole", "post", editJson).then(res => {
+                res == "添加成功！" && call(res);
+              });
+            }
+        })
       }
     },
     //复选框回显

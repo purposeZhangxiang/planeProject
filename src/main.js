@@ -13,7 +13,31 @@ Vue.use(Element);
 //自定义全局css
 import './assets/style.css'
 
-
+import {Loading} from 'element-ui'
+import axios from "axios";
+let loading;
+function startLoading() {    //使用Element loading-start 方法
+  loading = Loading.service({
+    lock: true,
+    text: '拼命加载中...',
+  })
+}
+function endLoading() {    //使用Element loading-close 方法
+  loading.close()
+}
+//请求数据拦截器
+axios.interceptors.request.use(request => {
+  startLoading();
+  return request
+}, err => {
+  return Promise.reject(err);
+});
+axios.interceptors.response.use(response => {
+  endLoading();
+  return response
+}, err => {
+  return Promise.reject(err);
+});
 
 //基于ElementUI的表单生成器
 // import FormMaking from 'form-making'
