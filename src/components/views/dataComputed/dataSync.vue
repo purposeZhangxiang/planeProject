@@ -5,7 +5,7 @@
     <div class="serachInput">
       <el-form :inline="true" :model="searchInput" class="searchInput">
         <el-form-item>
-          <el-select clearable multiple v-model="searchInput.factorynum" placeholder="飞机编号">
+          <el-select clearable multiple v-model="searchInput.factorynum" placeholder="飞机编号" > 
             <el-option
               v-for="(item,index) in planeOptions"
               :key="index"

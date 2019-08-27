@@ -21,6 +21,7 @@
     <el-table :data="tableData">
       <el-table-column prop="mingchen" label="名称"></el-table-column>
       <el-table-column prop="xianshiming" label="显示名"></el-table-column>
+      <el-table-column prop="mbdw" label="目标单位"></el-table-column>
       <el-table-column prop="duiyinglie" label="对应列数"></el-table-column>
       <el-table-column prop="caiyanglv" label="采样率"></el-table-column>
       <el-table-column prop="cxshizhensx" label="超限失真上限"></el-table-column>
@@ -38,6 +39,7 @@
         <el-form-item label="名称" label-width="120px" prop="mingchen">
           <el-input v-model="dialogForm.mingchen"></el-input>
         </el-form-item>
+
         <el-form-item label="显示名" label-width="120px" prop="xianshiming">
           <el-input v-model="dialogForm.xianshiming"></el-input>
         </el-form-item>
@@ -74,6 +76,7 @@ export default {
       nowLocation: ["系统管理", "飞参字段设置"],
       global: "",
       tableData: [],
+
       showDialog: false,
       index: "",
       dialogForm: {
@@ -87,30 +90,35 @@ export default {
       },
       rules: {
         mingchen: [
-          { required: true, message: "请输入飞机型号", trigger: "blur" }
+          { required: true, message: "此项不能为空", trigger: "blur" }
         ],
         xianshiming: [
-          { required: true, message: "请输入飞机型号", trigger: "blur" }
+          { required: true, message: "此项不能为空", trigger: "blur" }
         ],
         duiyinglie: [
-          { required: true, message: "请输入飞机型号", trigger: "blur" }
-        ],
-        caiyanglv: [
-          { required: true, message: "请输入飞机型号", trigger: "blur" },
+          { required: true, message: "此项不能为空", trigger: "blur" },
           {
             pattern: /^[1-9]\d*$/,
-            message: "正整数警告",
+            message: "请输入正整数",
+            trigger: "blur"
+          }
+        ],
+        caiyanglv: [
+          { required: true, message: "此项不能为空", trigger: "blur" },
+          {
+            pattern: /^[1-9]\d*$/,
+            message: "请输入正整数",
             trigger: "blur"
           }
         ],
         cxshizhensx: [
-          { required: true, message: "请输入飞机型号", trigger: "blur" }
+          { required: true, message: "此项不能为空", trigger: "blur" }
         ],
         cxshizhenxx: [
-          { required: true, message: "请输入飞机型号", trigger: "blur" }
+          { required: true, message: "此项不能为空", trigger: "blur" }
         ],
         bhlshizhensx: [
-          { required: true, message: "请输入飞机型号", trigger: "blur" }
+          { required: true, message: "此项不能为空", trigger: "blur" }
         ]
       }
     };
@@ -124,8 +132,13 @@ export default {
 
   methods: {
     getPrams() {
+      let mbdw = ["m", "km/h", "g", "h", "逻辑值", "kg","kg"];
       http("/fcsjcspz/getFcsjcspzlist", "post").then(res => {
         this.tableData = res;
+        //静态列
+        for (let index in this.tableData) {
+          this.tableData[index].mbdw = mbdw[index];
+        }
       });
     },
     setting() {
@@ -145,9 +158,15 @@ export default {
       this.index = index;
     },
     ok() {
-      let settingData = this.dialogForm;
-      Object.assign(this.tableData[this.index], settingData);
-      this.showDialog = !this.showDialog;
+      this.$refs["ruleForm"].validate(valid => {
+        if (valid) {
+          let settingData = this.dialogForm;
+          Object.assign(this.tableData[this.index], settingData);
+          this.showDialog = !this.showDialog;
+        } else {
+          return false;
+        }
+      });
     }
   }
 };

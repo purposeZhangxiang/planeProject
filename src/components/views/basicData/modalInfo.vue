@@ -89,7 +89,7 @@
           <el-input v-model="formLabelAlign.stateDescribe"></el-input>
         </el-form-item>
         <el-form-item label="空机重量" prop="emptyWeight">
-          <el-input v-model="formLabelAlign.emptyWeight"></el-input>
+          <el-input v-model="formLabelAlign.emptyWeight" type="number"></el-input>
         </el-form-item>
         <el-form-item label="型号描述" prop="typeDescribe">
           <el-input v-model="formLabelAlign.typeDescribe"></el-input>

@@ -11,9 +11,9 @@ let wsUrl;
 if (process.env.NODE_ENV === 'development') {
   //测试环境
   imgUrl = 'http://java2.kingwant.local:1234/attachment';
-  baseUrl = 'http://java2.kingwant.local:1234';
+  // baseUrl = 'http://java2.kingwant.local:1234';
   // baseUrl = 'http://10.10.0.56:8080';//MENG
-  // baseUrl = 'http://10.10.0.247:8080';//XIE
+  baseUrl = 'http://10.10.0.247:8080';//XIE
   wsUrl = "ws://java2.kingwant.local:1234/myWebSocketHandler"
 } else {
   //正式环境

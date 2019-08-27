@@ -97,7 +97,6 @@ export default {
         //表单验证阶段
         this.$refs["ruleForm"].validate((valid) => {
           if (valid) {
-            alert('验证通过!');
             this.Add(this.formLabelAlign);
           } else {
             return false;
@@ -106,7 +105,6 @@ export default {
       } else if (this.dialogTitle == "编辑") {
         this.$refs["ruleForm"].validate((valid) => {
           if (valid) {
-            alert('验证通过!');
             this.Edit(this.formLabelAlign);
           } else {
             return false;
