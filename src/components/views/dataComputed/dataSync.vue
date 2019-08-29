@@ -108,6 +108,7 @@ export default {
     };
   },
   created(){
+    //get router query
     // this.getData();
   },
   mounted() {

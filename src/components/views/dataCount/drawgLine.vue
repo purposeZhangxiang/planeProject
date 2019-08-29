@@ -1,7 +1,16 @@
 <template>
   <div>
     <Bread :nowLocation="nowLocation" />
+ 
     <!-- table -->
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column
+        v-for="(item,index) in thead"
+        :key="index"
+        :label="item.name"
+        :prop="item.prop"
+      ></el-table-column>
+    </el-table>
     <!-- echarts -->
     <div id="chartLine" style="width:100%; height:400px;"></div>
   </div>
@@ -15,11 +24,72 @@ export default {
   },
   data() {
     return {
-      nowLocation: ["画线"],
+      nowLocation: ["绘制"],
+      thead: [
+        {
+          name: "出厂编号",
+          value: "",
+          prop: "FACTORYNUMBER"
+        },
+        {
+          name: "飞机型号",
+          value: "",
+          prop: "PLANETYPE"
+        },
+        {
+          name: "出厂年月",
+          value: "",
+          prop: "DELIVERYTIME"
+        },
+        {
+          name: "服役日期",
+          value: "",
+          prop: "SERVICEDATE"
+        },
+        {
+          name: "部队编号",
+          value: "",
+          prop: "UNITNUMBER"
+        },
+        {
+          name: "累计损伤",
+          value: "",
+          prop: "SUMBCDLSS"
+        },
+        {
+          name: "单位时间损伤",
+          value: "",
+          prop: "DWSJDLSS"
+        },
+        {
+          name: "飞行小时",
+          value: "",
+          prop: "SUMBCFXSJ"
+        },
+        {
+          name: "当量飞行小时",
+          value: "",
+          prop: "DLFXXS"
+        },
+        {
+          name: "剩余飞行小时",
+          value: "",
+          prop: "SYFXXS"
+        },
+        {
+          name: "总起落次数",
+          value: "",
+          prop: "FLYCOUNT"
+        }
+      ],
+      tableData: [],
       chartLine: null,
       dealXAxis: [],
       yAxis: []
     };
+  },
+  created() {
+    this.tableData.push(this.$route.query);
   },
   mounted() {
     this.renderTable(this.$route.query);
@@ -49,8 +119,6 @@ export default {
             this.dealXAxis.push(sum);
           }
         }
-        // console.log(this.dealXAxis);
-        // console.log(this.yAxis);
         this.drawLineChart();
       });
     },

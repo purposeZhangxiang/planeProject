@@ -200,6 +200,7 @@ export default {
         pageSize: pageSize || 10
       };
       http("/kwrole/findAllPageByConditions", "post", json).then(res => {
+        debugger
         this.tableData = res.records;
         this.totalData = res.total;
       });
@@ -333,6 +334,10 @@ export default {
         this.dataTree = res;
         http("/kwpermission/findPer", "post").then(res1 => {});
       });
+    },
+    //
+    reshowPermission(){
+
     },
     editSuccess() {
       let json = {

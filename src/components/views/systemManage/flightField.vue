@@ -55,7 +55,7 @@
         <el-form-item label="超限失真下限" label-width="120px" prop="cxshizhenxx">
           <el-input type="number" v-model="dialogForm.cxshizhenxx"></el-input>
         </el-form-item>
-        <el-form-item label="变化率失真" label-width="120px">
+        <el-form-item label="变化率失真" label-width="120px" prop="bhlshizhensx">
           <el-input type="number" v-model="dialogForm.bhlshizhensx"></el-input>
         </el-form-item>
       </el-form>
@@ -119,6 +119,9 @@ export default {
         ],
         bhlshizhensx: [
           { required: true, message: "此项不能为空", trigger: "blur" }
+        ],
+        bhlshizhensx: [
+          { required: true, message: "此项不能为空", trigger: "blur" }
         ]
       }
     };
@@ -132,7 +135,7 @@ export default {
 
   methods: {
     getPrams() {
-      let mbdw = ["m", "km/h", "g", "h", "逻辑值", "kg","kg"];
+      let mbdw = ["m", "km/h", "g", "h", "逻辑值", "kg", "kg"];
       http("/fcsjcspz/getFcsjcspzlist", "post").then(res => {
         this.tableData = res;
         //静态列
