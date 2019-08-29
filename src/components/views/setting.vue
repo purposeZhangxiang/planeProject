@@ -11,7 +11,7 @@
         class="demo-ruleForm"
       >
         <el-form-item label="当前账户">
-          <el-input type="text" v-model="ruleForm2.user" autocomplete="off" readonly="readonly"></el-input>
+          <el-input type="text" v-model="username" autocomplete="off" readonly="readonly"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
           <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"></el-input>
@@ -30,7 +30,9 @@
 </template>
 
 <script>
+import minxin from '../../util/mixin';
 export default {
+  mixins:[minxin],
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === "") {

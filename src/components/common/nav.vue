@@ -18,8 +18,8 @@
           <span slot="title">{{item.name}}</span>
         </template>
         <el-menu-item
-          v-for="(sonItem,sonIndex) in item.sonMenu"
-          :index="sonItem.router.path+''"
+          v-for="(sonItem,sonIndex) in item.sonmenu"
+          :index="sonItem.router+''"
           :key="sonIndex"
         >{{sonItem.name}}</el-menu-item>
       </el-submenu>

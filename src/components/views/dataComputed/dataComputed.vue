@@ -47,10 +47,8 @@
           :on-remove="handleRemove"
           :on-success="handleSuccess"
           :on-error="handleError"
-          :on-progress="handProgress"
           :data="uploadData"
           multiple
-          :limit="1"
           :on-exceed="handleExceed"
         >
           <el-button size="small" type="primary">飞参数据导入</el-button>
@@ -151,19 +149,14 @@ export default {
         } 个文件，共选择了 ${files.length + fileList.length} 个文件`
       );
     },
-    handProgress(event, file, fileList) {
-      // this.$router.push("/home/computedResult")
-      // this.dialogFormVisible = true;
-      // setTimeout(() => {
-      //   this.active = 2;
-      // }, 2000);
-    },
     handleSuccess(res, file, fileList) {
-      debugger;
       if (res.code == "90000003") {
         this.$message.warning(res.msg);
       } else if (res.result == "0000") {
-        this.$router.push({ path: "/home/computedResult", query: res.data });
+        this.$router.push({
+          path: "/home/computedResult",
+          query: { param: this.dealData(res.data) }
+        });
       } else {
         this.$message.error(res.msg);
       }
@@ -175,6 +168,18 @@ export default {
       this.$confirm("正在解析计算数据,确认关闭？").then(res => {
         done();
       });
+    },
+    dealData(data) {
+      let arr = [];
+      for (let index in data) {
+        let json = {
+          bdbh: data[index].bdbh,
+          ccbh: data[index].ccbh,
+          title: "出厂编号 " + data[index].ccbh + " 部队编号 " + data[index].bdbh
+        };
+        arr.push(json);
+      }
+      return arr;
     }
   }
 };

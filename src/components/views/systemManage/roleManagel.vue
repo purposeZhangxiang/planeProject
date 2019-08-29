@@ -89,15 +89,16 @@
         <el-button type="primary" @click="Psuccess">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 权限 -->
     <el-dialog :title="tiTitle" :visible.sync="treeVisible" width="30%">
       <el-tree
         :data="dataTree"
         ref="treeForm"
-        :check-strictly="true"
+        :check-strictly="false"
         :highlight-current="true"
         @check-change="handleClick"
         show-checkbox
-        node-key="id"
+        node-key="ID"
         :props="defaultProps"
         :default-checked-keys="dateTreeSeleect"
       ></el-tree>
@@ -149,6 +150,7 @@ export default {
       personText: [],
       nowLocation: ["系统管理", "角色管理"],
       multipleSelection: [],
+      //tree
       dataTree: [],
       dateTreeSeleect: [],
       defaultProps: {
@@ -200,7 +202,6 @@ export default {
         pageSize: pageSize || 10
       };
       http("/kwrole/findAllPageByConditions", "post", json).then(res => {
-        debugger
         this.tableData = res.records;
         this.totalData = res.total;
       });
@@ -332,12 +333,61 @@ export default {
       this.treeVisible = true;
       http("/kwpermission/findpertree", "post").then(res => {
         this.dataTree = res;
-        http("/kwpermission/findPer", "post").then(res1 => {});
+        this.reshowPermission(row.kwpermission);
       });
     },
-    //
-    reshowPermission(){
+    //回显树的权限节点
+    reshowPermission(data) {
+      let newArr = [];
+      let dataMap = {};
+      for (let val of data) {
+        dataMap[val.id] = val;
+      }
+      const callIter = item => {
+        if (dataMap[item.ID] && !item.children) {
+          return newArr.push(item);
+        }
+        item.children && item.children.forEach(callIter);
+      };
 
+      this.dataTree.forEach(callIter);
+      // for (let index in this.dataTree) {
+      //   for (let val of data) {
+      //     if (
+      //       val.id == this.dataTree[index].ID &&
+      //       !this.dataTree[index].children
+      //     ) {
+      //       newArr.push(this.dataTree[index]);
+      //     }
+      //   }
+      // }
+      this.$nextTick(() => {
+        this.$refs.treeForm.setCheckedNodes(newArr);
+        // let expandArr = this.deep(this.dataTree);
+        // console.log(expandArr)
+        // for (let index in notCheck) {
+        //   this.$refs.treeForm.setChecked(notCheck[index], false);
+        // }
+      });
+    },
+    deep(node) {
+      let stack = node,
+        data = [];
+      while (stack.length != 0) {
+        let pop = stack.pop();
+        data.push({
+          id: pop.ID,
+          name: pop.NAME,
+          parentId: pop.PARENTID
+        });
+        let children = pop.children;
+        if (children) {
+          for (let i = children.length - 1; i >= 0; i--) {
+            stack.push(children[i]);
+          }
+        }
+      }
+      return data;
     },
     editSuccess() {
       let json = {
@@ -350,8 +400,10 @@ export default {
           type: "success"
         });
         this.treeVisible = false;
+        this.getTableData();
       });
     },
+    //click tree handelfunction
     handleClick(data, checked) {
       let tree = this.$refs.treeForm.getCheckedNodes(false, true),
         arr = [];

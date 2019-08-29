@@ -5,10 +5,10 @@
         <h2>{{name}}</h2>
       </div>
       <el-form :model="formObj" :rules="rules" ref="formObj" label-width="100px">
-        <el-form-item label="账号" prop="username">
+        <el-form-item label="账号" prop="username" class="font-color">
           <el-input v-model="formObj.username"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
+        <el-form-item label="密码" prop="password" class="font-color">
           <el-input type="password" v-model="formObj.password"></el-input>
         </el-form-item>
         <el-form-item>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { login } from "../../api/http";
+import { login, http } from "../../api/http";
 export default {
   data() {
     /**
@@ -74,6 +74,7 @@ export default {
             sessionStorage.setItem("token", res.access_token);
             this.$message.success("登陆成功");
             this.$router.push("/home");
+            // this.getUserInfo();
           });
         } else {
           return false;
@@ -82,7 +83,8 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
+    },
+    
   }
 };
 </script>
@@ -91,23 +93,25 @@ export default {
 .container {
   width: 100%;
   height: 100vh;
-  background: url("../../assets/img/timg.jpg") no-repeat;
+  background: url("../../assets/img/timg.png") no-repeat;
   background-size: cover;
   overflow: hidden;
   .form1 {
-    margin: 300px auto;
+    margin-left: 55%;
+    margin-top: 300px;
     width: 400px;
     height: 400px;
+    padding-left: 100px;
   }
   .title {
     height: 60px;
     text-align: center;
-    color: white
+    color: white;
   }
 }
 
-.el-form-item__label {
-  color: white;
+.font-color {
+  color: white !important;
 }
 </style>
 

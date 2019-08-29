@@ -9,8 +9,8 @@
       </div>
       <el-dropdown trigger="hover">
         <span class="el-dropdown-link userinfo-inner">
-          <img src="../../assets/logo.png">
-          <span style="color:#fff">你好,admin</span>
+          <img src="../../assets/avator.png">
+          <span style="color:#fff;display:inline-block;padding:0 10px;">你好,{{username}}</span>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="setting">设置</el-dropdown-item>
@@ -22,7 +22,9 @@
 </template>
 
 <script>
+import mixin from '../../util/mixin';
 export default {
+  mixins:[mixin],
   data() {
     return {
       iconLR: "iconfont icon-caidan iconSize",
