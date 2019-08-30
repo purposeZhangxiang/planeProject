@@ -51,7 +51,7 @@
       </el-table>
     </div>
     <!-- 模态框 -->
-    <el-dialog :title="tiTitle" :visible.sync="dialogVisible" width="30%">
+    <el-dialog :title="tiTitle" :visible.sync="dialogVisible" width="30%" @close="handleClose1">
       <div class="standMessage">
         <!--数据表格对话框-->
         <div v-if="title == 'table'" class="standMessage">
@@ -223,6 +223,7 @@ export default {
     //新增
     submitForm() {
       this.tiTitle = "新增";
+      debugger;
       this.form = {};
       this.dialogVisible = true;
       this.$refs.form.clearValidate();
@@ -467,6 +468,11 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+    },
+    handleClose1() {
+      debugger
+      this.title = "";
+      this.tiTitle = "";
     }
   }
 };

@@ -5,10 +5,10 @@
         <h2>{{name}}</h2>
       </div>
       <el-form :model="formObj" :rules="rules" ref="formObj" label-width="100px">
-        <el-form-item label="账号" prop="username" class="font-color">
+        <el-form-item label="账号" prop="username" id="font-color">
           <el-input v-model="formObj.username"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password" class="font-color">
+        <el-form-item label="密码" prop="password" id="font-color">
           <el-input type="password" v-model="formObj.password"></el-input>
         </el-form-item>
         <el-form-item>
@@ -83,8 +83,7 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-    
+    }
   }
 };
 </script>
@@ -109,8 +108,7 @@ export default {
     color: white;
   }
 }
-
-.font-color {
+#font-color {
   color: white !important;
 }
 </style>
