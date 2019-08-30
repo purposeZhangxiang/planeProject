@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   //正式环境
   imgUrl = 'http://java2.kingwant.local:1234/attachment';
-  baseUrl = 'http://java2.kingwant.local:1234';
+  baseUrl = 'http://life.kingwant.com';
   wsUrl = ""
 }
 
