@@ -37,7 +37,7 @@
     <!-- 表格 -->
     <div class="table">
       <el-table
-        ref="multipleTable"
+        ref="table"
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
@@ -75,6 +75,7 @@
         :model="formLabelAlign"
         :rules="rules"
         ref="ruleForm"
+        :disabled="dialogTitle=='查看' "
       >
         <el-form-item label="飞机型号" prop="planeType">
           <el-input v-model="formLabelAlign.planeType"></el-input>
@@ -171,7 +172,11 @@ export default {
         ],
         emptyWeight: [
           { required: true, message: "请输入空机重量", trigger: "blur" },
-          { pattern: /^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$/,message:'请输入正数', trigger: "blur" }
+          {
+            pattern: /^\d+(\.{0,1}\d+){0,1}$/,
+            message: "请输入数字",
+            trigger: "blur"
+          }
         ],
         typeDescribe: [
           { required: true, message: "请输入型号描述", trigger: "blur" }

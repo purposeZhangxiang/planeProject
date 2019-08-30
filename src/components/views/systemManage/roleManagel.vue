@@ -50,6 +50,7 @@
         </el-table-column>
       </el-table>
     </div>
+    <!-- 模态框 -->
     <el-dialog :title="tiTitle" :visible.sync="dialogVisible" width="30%">
       <div class="standMessage">
         <!--数据表格对话框-->

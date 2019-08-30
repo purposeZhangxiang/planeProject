@@ -15,7 +15,7 @@
           :data="treeData"
           :props="defaultProps"
           @node-click="nodeTable"
-          node-key="name"
+          node-key="ID"
           :expand-on-click-node="false"
           default-expand-all
           ref="tree"
@@ -47,7 +47,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="备注" label-width="100px">
-                  <el-input type="textarea" v-model="form.alias" clearable></el-input>
+                  <el-input type="textarea" v-model="form.alias" clearable max="250" rows="3"></el-input>
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" @click="saveForm">保存</el-button>
@@ -65,7 +65,6 @@
               </div>
               <!-- table -->
               <el-table :data="tableData" border>
-                <!-- <el-table-column type="selection" width="55"></el-table-column> -->
                 <el-table-column
                   v-for="(item,index) in thead"
                   :key="index"
@@ -79,7 +78,12 @@
       </div>
     </div>
     <!-- dialog -->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" width="40%">
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogFormVisible"
+      width="40%"
+      @close="handleColse"
+    >
       <!-- 新增部门 -->
       <el-form v-if="dialogTitle=='新增部门' " :model="dialogForm" :rules="rules" ref="ruleForm">
         <el-form-item label="部门名称" label-width="120px" prop="name">
@@ -102,7 +106,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="备注" label-width="120px">
-          <el-input type="textarea" v-model="dialogForm.alias" clearable></el-input>
+          <el-input type="textarea" v-model="dialogForm.alias" clearable max="250" rows="3"></el-input>
         </el-form-item>
       </el-form>
       <!-- 选择人员 -->
@@ -209,7 +213,9 @@ export default {
       this.reshowDialogTable();
     },
     add() {
+      //bug 先选中一项删除后 再新增 理论模态框不应该打开
       //判断是否有点击选中的树节点
+      debugger;
       if (!this.$refs.tree.getCurrentNode()) {
         this.$message.warning("请先选择树节点,再做新增操作");
         return;
@@ -219,17 +225,21 @@ export default {
       this.dialogFormVisible = !this.dialogFormVisible;
     },
     handleDelete() {
-      if (!this.$refs.tree.getCurrentNode()) {
-        this.$message.warning("请先选择树节点,再做删除操作");
-      } else if (this.$refs.tree.getCurrentNode().ID == "0") {
-        this.$message.warning("根节点无法删除");
-      } else {
-        //delete
+      if (
+        this.$refs.tree.getCurrentNode &&
+        this.$refs.tree.getCurrentNode().ID != "0"
+      ) {
         let currentNodeId = this.$refs.tree.getCurrentNode().ID;
         http("/dept/delKwdept", "post", { id: currentNodeId }).then(res => {
           this.$message.success(res);
           this.getTree();
+          // console.log(this.$refs.tree.getCurrentNode().ID);
+          // this.$refs.tree.getCurrentNode()=null;
         });
+      } else if (this.$refs.tree.getCurrentNode().ID == "0") {
+        this.$message.warning("根节点无法删除");
+      } else {
+        this.$message.warning("请先选择树节点,再做删除操作");
       }
     },
     nodeTable(data, node, label) {
@@ -251,7 +261,7 @@ export default {
     reshowOption(data) {
       let manager = [];
       for (let index in data.listmanager) {
-        manager.push(data.listmanager[index].username);
+        manager.push(data.listmanager[index].id);
       }
       let obj = {
         name: data.name,
@@ -347,6 +357,9 @@ export default {
           this.reloadUser({ ID: deptid });
         });
       }
+    },
+    handleColse() {
+      this.$refs.ruleForm.resetFields();
     }
   }
 };

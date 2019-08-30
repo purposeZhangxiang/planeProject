@@ -76,7 +76,6 @@ export default {
       nowLocation: ["系统管理", "飞参字段设置"],
       global: "",
       tableData: [],
-
       showDialog: false,
       index: "",
       dialogForm: {
@@ -145,8 +144,13 @@ export default {
       });
     },
     setting() {
-      for (let val of this.tableData) {
-        val.caiyanglv = this.global;
+      const reg = /^\d+(\.{0,1}\d+){0,1}$/;
+      if (this.global.match(reg)) {
+        for (let val of this.tableData) {
+          val.caiyanglv = this.global;
+        }
+      } else {
+        this.$message.warning("请输入正整数");
       }
     },
     save() {

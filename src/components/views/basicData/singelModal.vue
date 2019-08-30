@@ -1,4 +1,3 @@
-// 单机信息页面
 <template>
   <div>
     <commomBread :nowLocation="nowLocation"></commomBread>
@@ -72,11 +71,11 @@
     >
       <el-form
         label-position="right"
-        class="stand-alone"
-        label-width="130px"
+        label-width="150px"
         :model="formLabelAlign"
         :rules="rules"
         ref="ruleForm"
+        :disabled="dialogTitle=='查看' "
       >
         <el-col :span="12">
           <el-form-item label="出厂编号" prop="factorynumber">
@@ -90,7 +89,7 @@
               style="width:100%"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="所属部队名称" prop="">
+          <el-form-item label="所属部队名称" prop>
             <el-select v-model="value" placeholder="请选择" style="width: 100%">
               <el-option
                 v-for="item in options"
@@ -109,12 +108,19 @@
           <el-form-item label="空机重量(kg)" prop="emptyweight">
             <el-input v-model="formLabelAlign.emptyweight"></el-input>
           </el-form-item>
-          <el-form-item label="S-N指数" prop="sn">
+          <el-form-item label="S-N指数">
             <el-input v-model="formLabelAlign.sn"></el-input>
+          </el-form-item>
+          <el-form-item label="基准普飞行小时" prop="jzpfxxs">
+            <el-input type="number" v-model="formLabelAlign.jzpfxxs"></el-input>
+          </el-form-item>
+
+          <el-form-item label="基准普当量损伤" prop="jzpdlss">
+            <el-input type="number" v-model="formLabelAlign.jzpdlss"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="飞机型号">
+          <el-form-item label="飞机型号" prop="plantypeid">
             <el-select style="width: 100%" v-model="formLabelAlign.plantypeid" placeholder="请选择">
               <el-option
                 v-for="item in options"
@@ -132,7 +138,7 @@
               style="width:100%"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="所属部队编号">
+          <el-form-item label="所属部队编号" prop="required">
             <el-input v-model="formLabelAlign.unitnumber"></el-input>
           </el-form-item>
           <el-form-item label="使用机号">
@@ -141,11 +147,14 @@
           <el-form-item label="最大限制过载">
             <el-input v-model="formLabelAlign.maxoverdrive"></el-input>
           </el-form-item>
-          <el-form-item label="强度设计重量(kg)">
-            <el-input v-model="formLabelAlign.strengthweight"></el-input>
+          <el-form-item label="强度设计重量(kg)" prop="strengthweight">
+            <el-input type="number" v-model="formLabelAlign.strengthweight"></el-input>
           </el-form-item>
           <el-form-item label="最大设计过载">
             <el-input v-model="formLabelAlign.maxdesignoverdrive"></el-input>
+          </el-form-item>
+          <el-form-item label="基准总寿命" prop="jzzsm">
+            <el-input v-model="formLabelAlign.jzzsm"></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -171,6 +180,25 @@
 <script>
 import { http } from "../../../api/http";
 import tabMixin from "../../../util/tableMixin";
+const floatRules = [
+    {
+      required: true,
+      message: "此为必填项",
+      trigger: "blur"
+    },
+    {
+      pattern: /^\d+(\.{0,1}\d+){0,1}$/,
+      message: "请输入数字且>0",
+      trigger: "blur"
+    }
+  ],
+  requiredRule = [
+    {
+      required: true,
+      message: "此为必填项",
+      trigger: "blur"
+    }
+  ];
 
 export default {
   mixins: [tabMixin],
@@ -222,101 +250,24 @@ export default {
         strengthweight: "",
         maxoverdrive: "",
         maxdesignoverdrive: "",
-        sn: ""
+        sn: "",
+        jzpfxxs: "",
+        jzpdlss: "",
+        jzzsm: ""
       },
       //表单验证规则
       rules: {
-        factorynumber: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        plantypeid: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        deliverytime: [
-          {
-            required: true,
-            message: "请输入飞机型号",
-            trigger: "blur"
-          }
-        ],
-        servicedate: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        unitnumber: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        usernumber: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        unitmiddle: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        fightweight: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        emptyweight: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        strengthweight: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        maxoverdrive: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        maxdesignoverdrive: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ],
-        sn: [
-          {
-            required: true,
-            message: "此为必填项",
-            trigger: "blur"
-          }
-        ]
+        factorynumber: requiredRule,
+        plantypeid: requiredRule,
+        deliverytime: requiredRule,
+
+        unitmiddle: requiredRule,
+        fightweight: floatRules,
+        emptyweight: floatRules,
+        strengthweight: floatRules,
+        jzpfxxs: floatRules,
+        jzpdlss: floatRules,
+        jzzsm: floatRules
       },
       totalData: 10,
       multipleSelection: [],
@@ -381,6 +332,7 @@ export default {
             message: "添加成功",
             type: "success"
           });
+          this.dialogFormVisible = !this.dialogFormVisible;
         }
       );
     },
@@ -413,13 +365,7 @@ export default {
       http("/singleInformation/getSingleinformationById", "post", {
         id: id
       }).then(res => {
-        debugger;
         Object.assign(this.formLabelAlign, res);
-        // if (typeof res === "object") {
-        //   this.editData = res;
-        // } else {
-        //   this.editData = JSON.parse(res);
-        // }
       });
     },
     Edit(data) {
@@ -430,6 +376,7 @@ export default {
             message: "修改成功",
             type: "success"
           });
+          this.dialogFormVisible = !this.dialogFormVisible;
         }
       );
     },

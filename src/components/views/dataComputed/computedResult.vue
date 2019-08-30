@@ -50,10 +50,9 @@ export default {
         { label: "出厂年月", prop: "DELIVERYTIME" },
         { label: "服役日期", prop: "SERVICEDATE" },
         { label: "部队编号", prop: "UNITNUMBER" },
-        { label: "使用编号", prop: "" },
         { label: "飞行小时(h)", prop: "SUMBCFXSJ" },
         { label: "当量飞行(h)", prop: "DLFXXS" },
-        { label: "剩余飞行小时(h)", prop: "" },
+        { label: "剩余飞行小时(h)", prop: "SYFXXS" },
         { label: "总起落次数", prop: "FLYCOUNT" }
       ],
       //echart
@@ -71,7 +70,6 @@ export default {
       this.collapseData = options;
       this.activeName = 0;
       this.getTable();
-      console.log(this.collapseData);
     },
     getTable() {
       http("/data/djLL", "post", {
@@ -79,6 +77,7 @@ export default {
         CCBH: this.collapseData[this.activeName].ccbh
       }).then(res => {
         this.tableData = res.records;
+        console.log(res);
         //drawline
         this.$nextTick(() => {
           this.initEcharts();
@@ -108,9 +107,7 @@ export default {
         ]
       });
     },
-    collChange(op) {
-      console.log(op);
-    }
+    collChange(op) {}
   }
 };
 </script>

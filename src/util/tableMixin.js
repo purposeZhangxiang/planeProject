@@ -166,8 +166,11 @@ export default {
       })
     },
     handleClose() {
-      this.$refs["ruleForm"].clearValidate();
-    }
+      // this.$refs["ruleForm"].clearValidate();
+      debugger
+      this.$refs.ruleForm.resetFields()
+    },
+ 
 
     // clearFormStatus() {
     //     //置空表单

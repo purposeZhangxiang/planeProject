@@ -50,6 +50,7 @@
           :data="uploadData"
           multiple
           :on-exceed="handleExceed"
+          ref="upload"
         >
           <el-button size="small" type="primary">飞参数据导入</el-button>
           <div slot="tip" class="el-upload__tip">只能上传txt/zip文件</div>
@@ -143,6 +144,7 @@ export default {
     },
     handleRemove(file, fileList) {},
     handleExceed(files, fileList) {
+      debugger;
       this.$message.warning(
         `当前限制选择 1 个文件，本次选择了 ${
           files.length
@@ -151,17 +153,21 @@ export default {
     },
     handleSuccess(res, file, fileList) {
       if (res.code == "90000003") {
-        this.$message.warning(res.msg);
+        this.$message.warning(res.msg); //error
+        // this.$refs.upload.clearFiles();
       } else if (res.result == "0000") {
         this.$router.push({
           path: "/home/computedResult",
           query: { param: this.dealData(res.data) }
         });
       } else {
+        this.$refs.upload.clearFiles();
         this.$message.error(res.msg);
       }
     },
     handleError(err, file, fileList) {
+      //清空原来的上传文件列表
+      this.$refs.upload.clearFiles();
       this.$message.error("上传失败,请重试");
     },
     handleModalClose(done) {
@@ -175,7 +181,8 @@ export default {
         let json = {
           bdbh: data[index].bdbh,
           ccbh: data[index].ccbh,
-          title: "出厂编号 " + data[index].ccbh + " 部队编号 " + data[index].bdbh
+          title:
+            "出厂编号 " + data[index].ccbh + " 部队编号 " + data[index].bdbh
         };
         arr.push(json);
       }
