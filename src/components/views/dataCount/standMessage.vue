@@ -61,6 +61,26 @@ export default {
       },
       theadText: [
         {
+          name: "总起落次数",
+          value: "",
+          prop: "FLYCOUNT"
+        },
+        {
+          name: "飞行小时",
+          value: "",
+          prop: "SUMBCFXSJ"
+        },
+        {
+          name: "当量飞行小时",
+          value: "",
+          prop: "DLFXXS"
+        },
+        {
+          name: "剩余飞行小时",
+          value: "",
+          prop: "SYFXXS"
+        },
+        {
           name: "出厂编号",
           value: "",
           prop: "FACTORYNUMBER"
@@ -95,26 +115,7 @@ export default {
           value: "",
           prop: "DWSJDLSS"
         },
-        {
-          name: "飞行小时",
-          value: "",
-          prop: "SUMBCFXSJ"
-        },
-        {
-          name: "当量飞行小时",
-          value: "",
-          prop: "DLFXXS"
-        },
-        {
-          name: "剩余飞行小时",
-          value: "",
-          prop: "SYFXXS"
-        },
-        {
-          name: "总起落次数",
-          value: "",
-          prop: "FLYCOUNT"
-        }
+        
       ],
       tableData: [],
       currentPage: 1,

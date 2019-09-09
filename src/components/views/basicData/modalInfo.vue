@@ -83,17 +83,28 @@
         <el-form-item label="中文名称" prop="chinaName">
           <el-input v-model="formLabelAlign.chinaName"></el-input>
         </el-form-item>
-        <el-form-item label="结构状态编号" prop="num">
+        <!-- <el-form-item label="结构状态编号" prop="num">
           <el-input v-model="formLabelAlign.num"></el-input>
-        </el-form-item>
-        <el-form-item label="结构状态描述" prop="stateDescribe">
+        </el-form-item>-->
+        <!-- <el-form-item label="结构状态描述" prop="stateDescribe">
           <el-input v-model="formLabelAlign.stateDescribe"></el-input>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="空机重量" prop="emptyWeight">
           <el-input v-model="formLabelAlign.emptyWeight" type="number"></el-input>
         </el-form-item>
-        <el-form-item label="型号描述" prop="typeDescribe">
+        <!-- <el-form-item label="型号描述" prop="typeDescribe">
           <el-input v-model="formLabelAlign.typeDescribe"></el-input>
+        </el-form-item>-->
+        <el-form-item label="标准当量损伤" prop="bzdlssl">
+          <el-input v-model="formLabelAlign.bzdlssl" type="number"></el-input>
+        </el-form-item>
+
+        <el-form-item label="标准作战重量" prop="fightWeight">
+          <el-input v-model="formLabelAlign.fightWeight" type="number"></el-input>
+        </el-form-item>
+
+        <el-form-item label="设计使用寿命" prop="sjsysm">
+          <el-input v-model="formLabelAlign.sjsysm" type="number"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -137,10 +148,15 @@ export default {
       theadText: [
         { name: "飞机型号", value: "planeType", prop: "planeType" },
         { name: "中文名称", value: "chinaName", prop: "chinaName" },
-        { name: "结构状态编号", value: "num", prop: "num" },
-        { name: "结构状态描述", value: "stateDescribe", prop: "stateDescribe" },
+        // { name: "结构状态编号", value: "num", prop: "num" },
+        // { name: "结构状态描述", value: "stateDescribe", prop: "stateDescribe" },
         { name: "空机重量", value: "emptyWeight", prop: "emptyWeight" },
-        { name: "型号描述", value: "typeDescribe", prop: "typeDescribe" }
+        // { name: "型号描述", value: "typeDescribe", prop: "typeDescribe" }
+
+        //add
+        { name: "标准当量损伤", value: "bzdlssl", prop: "bzdlssl" },
+        { name: "标准作战重量", value: "fightWeight", prop: "fightWeight" },
+        { name: "设计使用寿命", value: "sjsysm", prop: "sjsysm" }
       ],
       totalData: 10,
       searchInput: {
@@ -154,7 +170,10 @@ export default {
         num: "",
         stateDescribe: "",
         emptyWeight: "",
-        typeDescribe: ""
+        typeDescribe: "",
+        bzdlssl: "",
+        fightWeight: "",
+        sjsysm: ""
       },
       //表单验证规则
       rules: {
@@ -180,6 +199,15 @@ export default {
         ],
         typeDescribe: [
           { required: true, message: "请输入型号描述", trigger: "blur" }
+        ],
+        bzdlssl: [
+          { required: true, message: "请输入标准当量损伤", trigger: "blur" }
+        ],
+        fightWeight: [
+          { required: true, message: "请输入标准作战重量", trigger: "blur" }
+        ],
+        sjsysm: [
+          { required: true, message: "请输入设计使用寿命", trigger: "blur" }
         ]
       },
 
@@ -217,6 +245,7 @@ export default {
       http("/planeType/findAllPageByConditions", "post", json).then(res => {
         this.tableData = res.records;
         this.totalData = res.total;
+        console.log(res);
       });
     },
     Add(data) {

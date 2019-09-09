@@ -422,6 +422,5 @@ export default {
 </style>
 
 <style lang="less">
-.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
-}
+
 </style>
