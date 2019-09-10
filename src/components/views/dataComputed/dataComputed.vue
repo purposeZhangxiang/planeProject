@@ -144,7 +144,6 @@ export default {
     },
     handleRemove(file, fileList) {},
     handleExceed(files, fileList) {
-      debugger;
       this.$message.warning(
         `当前限制选择 1 个文件，本次选择了 ${
           files.length

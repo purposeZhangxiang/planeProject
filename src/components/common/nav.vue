@@ -5,14 +5,12 @@
       :unique-opened="true"
       default-active="1-1"
       class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
       :collapse="isCollapse"
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-      <el-submenu v-for="(item,index) in navgroup" :index="index+''" :key="index">
+      <!-- <el-submenu v-for="(item,index) in navgroup" :index="index+''" :key="index">
         <template slot="title">
           <i :class="item.icon"></i>
           <span slot="title">{{item.name}}</span>
@@ -23,6 +21,30 @@
           :key="sonIndex"
         >{{sonItem.name}}</el-menu-item>
       </el-submenu>
+      <el-menu-item index="1-2">
+        <i class="el-icon-menu"></i>
+        <span slot="title">静态</span>
+      </el-menu-item>-->
+
+      <div v-for="(item,index) in navgroup" :index="index+''" :key="index">
+        <!-- include submenu -->
+        <el-submenu v-if="item.sonmenu" :index="index+''">
+          <template slot="title">
+            <i :class="item.icon"></i>
+            <span slot="title">{{item.name}}</span>
+          </template>
+          <el-menu-item
+            v-for="(sonItem,sonIndex) in item.sonmenu"
+            :index="sonItem.router+''"
+            :key="sonIndex"
+          >{{sonItem.name}}</el-menu-item>
+        </el-submenu>
+        <!-- singel menu -->
+        <el-menu-item :index="item.router" v-else>
+          <i :class="item.icon"></i>
+          <span slot="title">{{item.name}}</span>
+        </el-menu-item>
+      </div>
     </el-menu>
   </div>
 </template>
@@ -40,14 +62,7 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    handleOpen(key, keyPath) {
-      // console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      // console.log(key, keyPath);
-    }
-  }
+  methods: {}
 };
 </script>
 
@@ -71,5 +86,4 @@ export default {
   width: 200px;
   min-height: 400px;
 }
-
 </style>

@@ -7,26 +7,19 @@
       <el-form-item>
         <el-select
           v-model="planeOptionsChecked"
-          multiple
           filterable
           allow-create
           default-first-option
           placeholder="出厂编号"
           @change="planeOptionsCheck"
         >
-          <el-option
-            v-for="item in planeOptions"
-            :key="item.FACTORYNUMBER"
-            :label="item.FACTORYNUMBER"
-            :value="item.FACTORYNUMBER"
-          ></el-option>
+          <el-option v-for="item in planeOptions" :key="item" :label="item" :value="item"></el-option>
         </el-select>
       </el-form-item>
       <!-- 起落架次 -->
       <el-form-item>
         <el-select
           v-model="upDownsOptionsChecked"
-          multiple
           filterable
           allow-create
           default-first-option
@@ -34,10 +27,22 @@
         >
           <el-option
             v-for="item in upDownsOptions"
-            :key="item.QLBH"
-            :label="item.QLBH"
-            :value="item.QLBH"
+            :key="item"
+            :label="item"
+            :value="item"
           ></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- 部队编号 -->
+      <el-form-item>
+        <el-select
+          v-model="bdbhOptionsChecked"
+          filterable
+          allow-create
+          default-first-option
+          placeholder="部队编号"
+        >
+          <el-option v-for="item in bdbhOptions" :key="item" :label="item" :value="item"></el-option>
         </el-select>
       </el-form-item>
       <!-- 飞行参数 -->
@@ -58,6 +63,7 @@
       </el-form-item>
     </el-form>
     <!-- eachrts -->
+    <div id="chartLine" style="width:100%; height:400px;"></div>
   </div>
 </template>
 
@@ -67,14 +73,20 @@ export default {
   name: "fdrBight",
   data() {
     return {
-      echars: false,
       planeOptions: [],
       upDownsOptions: [],
+      bdbhOptions: [],
       flyParamOptions: ["高度", "速度", "法向过载"],
-      planeOptionsChecked: [],
-      upDownsOptionsChecked: [],
+      //checked
+      planeOptionsChecked: "",
+      upDownsOptionsChecked: "",
       flyParamOptionsChecked: [],
-      nowLocation: ["数据查询统计", "飞参曲线 "]
+      bdbhOptionsChecked:"",
+      nowLocation: ["数据查询统计", "飞参曲线 "],
+      //echars
+      echartsName:'',
+      yAxis:[],
+      dealXAxis:[],
     };
   },
   components: {
@@ -82,38 +94,99 @@ export default {
   },
   created() {
     this.getPlaneOptions();
+    this.getBDBH();
   },
   methods: {
     getPlaneOptions() {
-      http("/data/getccbh", "get").then(res => {
+      http("/data/getCCBH", "get").then(res => {
         this.planeOptions = res;
       });
     },
     planeOptionsCheck(val) {
-      if (val.length == 0) {
-        this.upDownsOptions = [];
+      if (val == "") {
+        this.upDownsOptions = "";
         return;
       }
-      this.getUpDownOptions(val.join(","));
+      // this.getUpDownOptions(val.join(","));
+      this.getUpDownOptions(val);
+      
     },
     getUpDownOptions(param) {
-      http("/data/getqlbh", "post", { CCBH: param }).then(res => {
+      http("/data/getQLBH", "post", { CCBH: param }).then(res => {
         this.upDownsOptions = res;
+      });
+    },
+    //出厂编号
+    getBDBH() {
+      http("/data/getBDBH", "get").then(res => {
+        this.bdbhOptions = res;
       });
     },
     search() {
       if (
-        this.planeOptionsChecked.length == 0 ||
-        this.upDownsOptionsChecked.length == 0 ||
+        this.planeOptionsChecked == "" ||
+        this.upDownsOptionsChecked == "" ||
+        this.bdbhOptionsChecked == ""||
         this.flyParamOptionsChecked.length == 0
       ) {
         this.$message.warning("搜索条件不能为空");
         return;
       }
       // deal param and search!
-      // http().then(res=>{
-
-      // })
+      http("/data/djFXQX", "post", {
+        BDBH: this.bdbhOptionsChecked,
+        CCBH: this.planeOptionsChecked,
+        QLJC: this.upDownsOptionsChecked,
+        PARAMS: this.flyParamOptionsChecked.join(",")
+      }).then(res => {
+        for(let val of res){
+          console.log(val)
+          this.yAxis.push(val.VALUE)
+        }
+        this.drawLineChart()
+      });
+    },
+    drawLineChart() {
+      this.chartLine = this.$echarts.init(document.getElementById("chartLine"));
+      //x 轴
+      let xAxis = {
+        type: "category",
+        name: "飞行总时间",
+        nameLocation: "middle",
+        boundaryGap: false,
+        data: this.dealXAxis
+      };
+      //y轴
+      let yAxis = {
+        type: "value",
+        name: "损伤值",
+        nameLocation: "end"
+      };
+      let series = [
+        {
+          name: "单机当量损伤",
+          type: "line",
+          stack: "总量",
+          data: this.yAxis
+        }
+      ];
+      this.chartLine.setOption({
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["单机当量损伤"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis,
+        yAxis,
+        series
+      });
     }
   }
 };

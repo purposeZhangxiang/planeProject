@@ -9,6 +9,7 @@
         :key="index"
         :label="item.name"
         :prop="item.prop"
+        width="120px"
       ></el-table-column>
     </el-table>
     <!-- echarts -->
@@ -26,6 +27,34 @@ export default {
     return {
       nowLocation: ["绘制"],
       thead: [
+         {
+          name: "总起落次数",
+          value: "",
+          prop: "FLYCOUNT"
+        },
+        {
+          name: "飞行小时",
+          value: "",
+          prop: "SUMBCFXSJ"
+        },
+        {
+          name: "当量飞行小时",
+          value: "",
+          prop: "DLFXXS"
+        },
+        {
+          name: "剩余飞行小时",
+          value: "",
+          prop: "SYFXXS"
+        },
+        {
+          name:'寿命比',
+          prop: "SMB"
+        },
+        {
+          name:'预计总寿命',
+          prop:'YJZSM'
+        },
         {
           name: "出厂编号",
           value: "",
@@ -46,11 +75,11 @@ export default {
           value: "",
           prop: "SERVICEDATE"
         },
-        {
-          name: "部队编号",
-          value: "",
-          prop: "UNITNUMBER"
-        },
+        // {
+        //   name: "部队编号",
+        //   value: "",
+        //   prop: "UNITNUMBER"
+        // },
         {
           name: "累计损伤",
           value: "",
@@ -61,26 +90,8 @@ export default {
           value: "",
           prop: "DWSJDLSS"
         },
-        {
-          name: "飞行小时",
-          value: "",
-          prop: "SUMBCFXSJ"
-        },
-        {
-          name: "当量飞行小时",
-          value: "",
-          prop: "DLFXXS"
-        },
-        {
-          name: "剩余飞行小时",
-          value: "",
-          prop: "SYFXXS"
-        },
-        {
-          name: "总起落次数",
-          value: "",
-          prop: "FLYCOUNT"
-        }
+        
+        
       ],
       tableData: [],
       chartLine: null,
@@ -143,7 +154,6 @@ export default {
           name: "单机当量损伤",
           type: "line",
           stack: "总量",
-          // data: [120.22, 132.23, 101.342, 134.234, 90.234, 230.324, 210.234]
           data: this.yAxis
         }
       ];

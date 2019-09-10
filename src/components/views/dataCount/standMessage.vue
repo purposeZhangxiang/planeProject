@@ -34,6 +34,7 @@
         :label="item.name"
         :prop="item.prop"
         :show-overflow-tooltip="true"
+        width="120px"
       ></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
@@ -81,6 +82,14 @@ export default {
           prop: "SYFXXS"
         },
         {
+          name: "寿命比",
+          prop: "SMB"
+        },
+        {
+          name: "预计总寿命",
+          prop: "YJZSM"
+        },
+        {
           name: "出厂编号",
           value: "",
           prop: "FACTORYNUMBER"
@@ -100,11 +109,11 @@ export default {
           value: "",
           prop: "SERVICEDATE"
         },
-        {
-          name: "部队编号",
-          value: "",
-          prop: "UNITNUMBER"
-        },
+        // {
+        //   name: "部队编号",
+        //   value: "",
+        //   prop: "UNITNUMBER"
+        // },
         {
           name: "累计损伤",
           value: "",
@@ -114,8 +123,7 @@ export default {
           name: "单位时间损伤",
           value: "",
           prop: "DWSJDLSS"
-        },
-        
+        }
       ],
       tableData: [],
       currentPage: 1,
@@ -126,9 +134,6 @@ export default {
     this.getTable();
   },
   methods: {
-    export() {
-      console.log("submit!");
-    },
     getTable(options) {
       let defaultOptions = {
         currentPage: this.currentPage,
