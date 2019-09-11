@@ -7,9 +7,13 @@ import systemManage from './kind/systemManage'
 const menuRouter = {
   path: '/home',
   component: () => import('../components/views/home.vue'),
-  redirect: { path: '/home/echars' },
+  redirect: { path: '/home/welcome' },
   children: [
     //通用组件展示
+    {
+      path: 'welcome',
+      component: () => import('../components/common/welcome.vue')
+    },
     {
       path: 'setting',
       component: () => import('../components/views/setting.vue')
@@ -29,10 +33,10 @@ const menuRouter = {
       path: 'dialog',
       component: () => import('../components/common/dialog.vue'),
     },
-    {
-      path: 'echars',
-      component: () => import('../components/common/echars.vue'),
-    },
+    // {
+    //   path: 'echars',
+    //   component: () => import('../components/common/echars.vue'),
+    // },
     {
       path: 'tree',
       component: () => import('../components/common/tree.vue')

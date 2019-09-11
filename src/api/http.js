@@ -33,9 +33,12 @@ const login = (apiName, method, data) => {
     })
 
 }
-
-//接口请求
 const sendRequest = (apiName, method, data, responseType = "json") => {
+    return sendRequestH(apiName, method, data, false, responseType);
+
+}
+//接口请求
+const sendRequestH = (apiName, method, data, loadding = true, responseType = "json") => {
     if (!apiName) {
         return
     }
@@ -46,6 +49,7 @@ const sendRequest = (apiName, method, data, responseType = "json") => {
         params: data || '',
         data: data || {},
         headers: {},
+        loadding,
         responseType
     }
     //token验证
@@ -55,6 +59,7 @@ const sendRequest = (apiName, method, data, responseType = "json") => {
         router.push({ path: '/login' });
         return;
     }
+
 
     //关于data的处理,如果后台按照序列化的标准接受就采用qs模块去处理post请求参数
     if (!data) {
@@ -66,6 +71,17 @@ const sendRequest = (apiName, method, data, responseType = "json") => {
         } else if (method == 'post' || method == 'POST') {
             delete config.params
         }
+    }
+
+    //loadding框
+    let loaddingObj;
+    if (config.loadding) {
+        loaddingObj = Loading.service({
+            target: document.getElementsByClassName('route')[0],
+            lock: true,
+            text: '拼命加载中...',
+            fullscreen: false
+        });
     }
     return new Promise((resolve, reject) => {
         axios(config)
@@ -84,8 +100,10 @@ const sendRequest = (apiName, method, data, responseType = "json") => {
                     }
 
                 }
+                config.loadding && loaddingObj && loaddingObj.close();
             })
             .catch(err => {
+                config.loadding && loaddingObj && loaddingObj.close();
                 //错误提示
                 Message.error(err);
                 reject(err)
@@ -111,4 +129,5 @@ function downloadExcel(data, type) {
 export {
     login,
     sendRequest as http,
+    sendRequestH as httpHasLoad,
 };

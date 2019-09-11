@@ -13,32 +13,38 @@ Vue.use(Element);
 //自定义全局css
 import './assets/style.css'
 
-import {Loading} from 'element-ui'
+import { Loading } from 'element-ui'
 import axios from "axios";
 let loading;
 function startLoading() {    //使用Element loading-start 方法
   loading = Loading.service({
+    target: document.getElementsByClassName('route')[0],
     lock: true,
     text: '拼命加载中...',
+    fullscreen: false
   })
 }
 function endLoading() {    //使用Element loading-close 方法
   loading.close()
 }
 //请求数据拦截器
-axios.interceptors.request.use(request => {
-  startLoading();
-  return request
-}, err => {
-  return Promise.reject(err);
-});
-axios.interceptors.response.use(response => {
-  endLoading();
-  return response
-}, err => {
-  endLoading();
-  return Promise.reject(err);
-});
+// axios.interceptors.request.use(request => {
+//   startLoading();
+//   return request
+// }, err => {
+//   return Promise.reject(err);
+// });
+// axios.interceptors.response.use(response => {
+//   // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+//   //   loading.close();
+//   // });
+//   return response
+// }, err => {
+//   // this.$nextTick(() => {
+//   //   loading.close();
+//   // });
+//   return Promise.reject(err);
+// });
 
 //基于ElementUI的表单生成器
 // import FormMaking from 'form-making'

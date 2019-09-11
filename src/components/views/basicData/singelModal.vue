@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import { http } from "../../../api/http";
+import { http,httpHasLoad } from "../../../api/http";
 import tabMixin from "../../../util/tableMixin";
 const floatRules = [
     {
@@ -311,7 +311,7 @@ export default {
         currentPage: currentPage || 1,
         pageSize: pageSize || 10
       };
-      http("/singleInformation/findAllPageByConditions", "post", json).then(
+      httpHasLoad("/singleInformation/findAllPageByConditions", "post", json).then(
         res => {
           // 对请求回的数据planeType,时间字段进行处理
           for (let val of res.records) {

@@ -41,6 +41,7 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
+        v-loading="loadding"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="40"></el-table-column>
@@ -127,7 +128,7 @@
 </template>
 
 <script>
-import { http } from "../../../api/http";
+import { http,httpHasLoad } from "../../../api/http";
 import table from "../../../util/tableMixin";
 export default {
   mixins: [table],
@@ -217,7 +218,8 @@ export default {
       deaufltPage: 1, //默认展示页码
       currentPage: 1, //当前页
       currentSize: 10, //当前展示条数
-      pageSize: [10, 15, 20] //每页展示
+      pageSize: [10, 15, 20], //每页展示
+      loadding: null
     };
   },
   components: {
@@ -242,11 +244,12 @@ export default {
         currentPage: currentPage || 1,
         pageSize: pageSize || 10
       };
-      http("/planeType/findAllPageByConditions", "post", json).then(res => {
-        this.tableData = res.records;
-        this.totalData = res.total;
-        console.log(res);
-      });
+      httpHasLoad("/planeType/findAllPageByConditions", "post", json).then(
+        res => {
+          this.tableData = res.records;
+          this.totalData = res.total;
+        },
+      );
     },
     Add(data) {
       http("/planeType/addPlaneType", "post", data).then(res => {

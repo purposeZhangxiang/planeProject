@@ -37,7 +37,7 @@
     <el-dialog title="修改" :visible.sync="showDialog">
       <el-form :model="dialogForm" :rules="rules" ref="ruleForm">
         <el-form-item label="名称" label-width="120px" prop="mingchen">
-          <el-input v-model="dialogForm.mingchen"></el-input>
+          <el-input v-model="dialogForm.mingchen" disabled></el-input>
         </el-form-item>
 
         <el-form-item label="显示名" label-width="120px" prop="xianshiming">

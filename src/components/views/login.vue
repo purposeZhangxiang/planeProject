@@ -4,12 +4,16 @@
       <div class="title">
         <h2>{{name}}</h2>
       </div>
-      <el-form :model="formObj" :rules="rules" ref="formObj" label-width="100px">
-        <el-form-item label="账号" prop="username" id="font-color">
+      <el-form :model="formObj" :rules="rules" ref="formObj" label-width="100px" id="font-color">
+        <el-form-item label="账号" prop="username" >
           <el-input v-model="formObj.username"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password" id="font-color">
-          <el-input type="password" v-model="formObj.password"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input
+            type="password"
+            v-model="formObj.password"
+            @keyup.enter.native="submitForm('formObj')"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('formObj')">登录</el-button>
@@ -108,12 +112,12 @@ export default {
     color: white;
   }
 }
-#font-color {
-  color: white !important;
-}
 </style>
 
 <style>
 /* label字体颜色 */
+#font-color .el-form-item__label{
+  color: white;
+}
 </style>
 

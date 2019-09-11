@@ -1,7 +1,7 @@
 <template>
   <div class="breadNav">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home/echars' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item v-for="(item,index) in nowLocation" :key="index">{{item}}</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
