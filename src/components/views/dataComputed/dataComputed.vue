@@ -47,6 +47,7 @@
           :on-remove="handleRemove"
           :on-success="handleSuccess"
           :on-error="handleError"
+          :on-progress="handleProgress"
           :data="uploadData"
           multiple
           :on-exceed="handleExceed"
@@ -65,10 +66,11 @@
       :before-close="handleModalClose"
     >
       <el-steps :active="active" :process-status="activeStatus">
-        <el-step title="数据导入" :description="description[0]"></el-step>
-        <el-step title="数据计算" :description="description[1]"></el-step>
-        <el-step title="数据查看" :description="description[2]"></el-step>
+        <el-step title="数据导入计算" :description="description[0]"></el-step>
+        <el-step title="数据查看" :description="description[1]"></el-step>
       </el-steps>
+
+      <p style="text-align:center;color:red;">计算时间可能比较长,请耐心等待..</p>
     </el-dialog>
   </div>
 </template>
@@ -103,7 +105,7 @@ export default {
       dialogFormVisible: false,
       active: 1,
       activeStatus: "",
-      description: ["导入成功", "计算中..", ""]
+      description: ["导入成功", "计算中.."]
     };
   },
   created() {
@@ -111,8 +113,6 @@ export default {
   },
   methods: {
     /**
-     * @method initWebsocket 初始化websocket
-     * @method closeWebsocket 断开websoket
      * @method handleBeforeUpload 上传前的回调
      * @method handleRemove 移除回调
      * @method handleExceed 超过限制文件回调
@@ -142,6 +142,9 @@ export default {
       }
       return isTxt;
     },
+    handleProgress() {
+      this.dialogFormVisible = !this.dialogFormVisible;
+    },
     handleRemove(file, fileList) {},
     handleExceed(files, fileList) {
       this.$message.warning(
@@ -150,10 +153,10 @@ export default {
         } 个文件，共选择了 ${files.length + fileList.length} 个文件`
       );
     },
+
     handleSuccess(res, file, fileList) {
       if (res.code == "90000003") {
         this.$message.warning(res.msg); //error
-        // this.$refs.upload.clearFiles();
       } else if (res.result == "0000") {
         this.$router.push({
           path: "/home/computedResult",
@@ -163,8 +166,10 @@ export default {
         this.$refs.upload.clearFiles();
         this.$message.error(res.msg);
       }
+      this.dialogFormVisible = !this.dialogFormVisible;
     },
     handleError(err, file, fileList) {
+      this.dialogFormVisible = !this.dialogFormVisible;
       //清空原来的上传文件列表
       this.$refs.upload.clearFiles();
       this.$message.error("上传失败,请重试");

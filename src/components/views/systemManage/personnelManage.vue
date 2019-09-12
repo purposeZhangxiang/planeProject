@@ -4,7 +4,7 @@
     <el-form :inline="true" :model="searchInput" class="searchInput standMessage">
       <el-form-item>
         <el-select clearable v-model="searchInput.condition">
-          <el-option v-for="(item,index) in theadText" :key="index" :label="item.name" :value="item.value"></el-option>
+          <el-option v-for="(item) in theadText" :key="item.value" :label="item.name" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -25,7 +25,7 @@
       <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column v-for="(item,index) in theadText" :prop="item.prop" :label="item.name" :key="index">
+        <el-table-column v-for="(item) in theadText" :prop="item.prop" :label="item.name" :key="item.name">
         </el-table-column>
         <el-table-column label="操作" width="232">
           <template slot-scope="scope">
@@ -36,7 +36,8 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog :title="title" :visible.sync="centerDialogVisible" width="30%">
+    <!-- add & edit -->
+    <el-dialog :title="title" :visible.sync="centerDialogVisible" width="30%" @close="firstDialog">
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
         <el-form-item label="人员姓名" prop="username">
           <el-input v-model="form.username"></el-input>
@@ -62,6 +63,7 @@
         <el-button type="primary" @click="uSubmint">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- password dialog -->
     <el-dialog title="修改密码" :visible.sync="modifyPasswordVisible" width="30%">
       <el-form ref="modifyPassForm" :model="modifyPassForm" label-width="80px" :rules="modifyRules">
         <el-form-item label="新密码" prop="password">
@@ -310,7 +312,6 @@
       updata(index, row) {
         this.title = "修改";
         this.centerDialogVisible = true;
-        this.$refs.form.clearValidate();
         this.form = {
           ...row
         };
@@ -368,6 +369,9 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
+      },
+      firstDialog(){
+        this.$refs.form.clearValidate();
       }
     }
   };

@@ -122,7 +122,7 @@ export default {
     getBDBH() {
       http("/data/getBDBH", "get").then(res => {
         this.bdbhOptions = res;
-        this.bdbhOptionsChecked = res[0];
+        this.bdbhOptionsChecked = res[0]; //default first 
       });
     },
     search() {
@@ -143,8 +143,9 @@ export default {
         PARAMS: this.flyParamOptionsChecked.join(",")
       }).then(res => {
         //deal xAxis
-        let xAixs = res.map(val => this.formatTime(val.FXSJ, "Y/M/D h:m:s"));
-        this.xAxis = new Set(xAixs);
+        let xAxis = res.map(val => this.formatTime(val.FXSJ, "Y/M/D h:m:s"));
+        debugger
+        this.xAxis = xAxis;
         // this.xAxis = Array.from(xAixs);
         // console.log(this.xAxis)
         //deal kind
@@ -188,6 +189,8 @@ export default {
         nameLocation: "end"
       };
       let series = this.series; //.concat(this.series);
+      debugger
+
       //deal series
       // let series = [];
       // for (let val of this.yAxis) {
