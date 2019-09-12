@@ -122,7 +122,7 @@ export default {
     getBDBH() {
       http("/data/getBDBH", "get").then(res => {
         this.bdbhOptions = res;
-        this.bdbhOptionsChecked = res[0]; //default first 
+        this.bdbhOptionsChecked = res[0]; //default first
       });
     },
     search() {
@@ -143,9 +143,9 @@ export default {
         PARAMS: this.flyParamOptionsChecked.join(",")
       }).then(res => {
         //deal xAxis
-        let xAxis = res.map(val => this.formatTime(val.FXSJ, "Y/M/D h:m:s"));
-        debugger
-        this.xAxis = xAxis;
+        // let xAxis = res.map(val => this.formatTime(val.FXSJ, "Y/M/D h:m:s"));
+        // debugger
+        // this.xAxis = xAxis;
         // this.xAxis = Array.from(xAixs);
         // console.log(this.xAxis)
         //deal kind
@@ -156,23 +156,33 @@ export default {
       let vi = { name: "飞行速度", type: "line", data: [] },
         hp = { name: "飞行高度", type: "line", data: [] },
         nz = { name: "法向过载", type: "line", data: [] };
+      let xAxis = [];
+      let li = [];
+      const appendName = val => {
+        li.indexOf(val) == -1 && li.push(val);
+      };
       for (let val of data) {
+          xAxis.push(val.FXSJ);
         switch (val.NAME) {
           case "vi":
             vi.data.push(val.VALUE);
+            appendName(vi.name);
             break;
           case "hp":
             hp.data.push(val.VALUE);
+            appendName(hp.name);
             break;
           case "nz":
             nz.data.push(val.VALUE);
+            appendName(val.name);
             break;
         }
       }
       this.series = [vi, hp, nz];
-      this.drawLineChart();
+      this.xAxis = Array.from(new Set(xAxis));
+      this.drawLineChart(li);
     },
-    drawLineChart() {
+    drawLineChart(li) {
       this.chartLine = this.$echarts.init(document.getElementById("chartLine"));
       //x 轴
       let xAxis = {
@@ -180,6 +190,11 @@ export default {
         name: "飞行时间",
         nameLocation: "middle",
         boundaryGap: false,
+        axisLabel: {
+          formatter: val => {
+            return this.formatTime(val, "Y/M/D h:m:s");
+          }
+        },
         data: this.xAxis
       };
       //y轴
@@ -189,33 +204,13 @@ export default {
         nameLocation: "end"
       };
       let series = this.series; //.concat(this.series);
-      debugger
-
-      //deal series
-      // let series = [];
-      // for (let val of this.yAxis) {
-      //   let json = {
-      //     name: val.NAME,
-      //     type: "line",
-      //     data: val.VALUE,
-      //     stack: "总量"
-      //   };
-      //   series.push(json);
-      // }
-      // let series = [
-      //   {
-      //     name: "单机当量损伤",
-      //     type: "line",
-      //     stack: "总量",
-      //     data: []
-      //   },
-      // ];
+      debugger;
       this.chartLine.setOption({
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data: ["飞行速度", "飞行高度", "法向过载"]
+          data: li
         },
         grid: {
           left: "3%",
