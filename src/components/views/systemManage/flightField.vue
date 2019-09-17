@@ -19,8 +19,8 @@
     </p>
     <!-- table -->
     <el-table :data="tableData">
-      <el-table-column prop="mingchen" label="名称"></el-table-column>
-      <el-table-column prop="xianshiming" label="显示名"></el-table-column>
+      <!-- <el-table-column prop="mingchen" label="名称"></el-table-column> 不显示!-->
+      <el-table-column prop="xianshiming" label="名称"></el-table-column>
       <el-table-column prop="mbdw" label="目标单位"></el-table-column>
       <el-table-column prop="duiyinglie" label="对应列数"></el-table-column>
       <el-table-column prop="caiyanglv" label="采样率"></el-table-column>
@@ -36,11 +36,11 @@
     <!-- dialog -->
     <el-dialog title="修改" :visible.sync="showDialog">
       <el-form :model="dialogForm" :rules="rules" ref="ruleForm">
-        <el-form-item label="名称" label-width="120px" prop="mingchen">
-          <el-input v-model="dialogForm.mingchen" disabled></el-input>
-        </el-form-item>
+        <!-- <el-form-item label="名称" label-width="120px" prop="mingchen">
+          <el-input v-model="dialogForm.mingchen" ></el-input>
+        </el-form-item>!-->
 
-        <el-form-item label="显示名" label-width="120px" prop="xianshiming">
+        <el-form-item label="名称" label-width="120px" prop="xianshiming">
           <el-input v-model="dialogForm.xianshiming"></el-input>
         </el-form-item>
         <el-form-item label="对应列数" label-width="120px" prop="duiyinglie">
@@ -68,120 +68,138 @@
 </template>
 
 <script>
-import { http } from "../../../api/http";
+  import {
+    http
+  } from "../../../api/http";
 
-export default {
-  data() {
-    return {
-      nowLocation: ["系统管理", "飞参字段设置"],
-      global: "",
-      tableData: [],
-      showDialog: false,
-      index: "",
-      dialogForm: {
-        mingchen: "",
-        xianshiming: "",
-        duiyinglie: "",
-        caiyanglv: "",
-        cxshizhensx: "",
-        cxshizhenxx: "",
-        bhlshizhensx: ""
+  export default {
+    data() {
+      return {
+        nowLocation: ["系统管理", "飞参字段设置"],
+        global: "",
+        tableData: [],
+        showDialog: false,
+        index: "",
+        dialogForm: {
+          mingchen: "",
+          xianshiming: "",
+          duiyinglie: "",
+          caiyanglv: "",
+          cxshizhensx: "",
+          cxshizhenxx: "",
+          bhlshizhensx: ""
+        },
+        rules: {
+          mingchen: [{
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }],
+          xianshiming: [{
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }],
+          duiyinglie: [{
+              required: true,
+              message: "此项不能为空",
+              trigger: "blur"
+            },
+            {
+              pattern: /^[1-9]\d*$/,
+              message: "请输入正整数",
+              trigger: "blur"
+            }
+          ],
+          caiyanglv: [{
+              required: true,
+              message: "此项不能为空",
+              trigger: "blur"
+            },
+            {
+              pattern: /^[1-9]\d*$/,
+              message: "请输入正整数",
+              trigger: "blur"
+            }
+          ],
+          cxshizhensx: [{
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }],
+          cxshizhenxx: [{
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }],
+          bhlshizhensx: [{
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }],
+          bhlshizhensx: [{
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }]
+        }
+      };
+    },
+    components: {
+      bread: () => import("../../common/bread")
+    },
+    created() {
+      this.getPrams();
+    },
+
+    methods: {
+      getPrams() {
+        let mbdw = ["m", "km/h", "g", "h", "逻辑值", "kg", "kg"];
+        http("/fcsjcspz/getFcsjcspzlist", "post").then(res => {
+          this.tableData = res;
+          //静态列
+          for (let index in this.tableData) {
+            this.tableData[index].mbdw = mbdw[index];
+          }
+        });
       },
-      rules: {
-        mingchen: [
-          { required: true, message: "此项不能为空", trigger: "blur" }
-        ],
-        xianshiming: [
-          { required: true, message: "此项不能为空", trigger: "blur" }
-        ],
-        duiyinglie: [
-          { required: true, message: "此项不能为空", trigger: "blur" },
-          {
-            pattern: /^[1-9]\d*$/,
-            message: "请输入正整数",
-            trigger: "blur"
+      setting() {
+        const reg = /^\d+(\.{0,1}\d+){0,1}$/;
+        if (this.global.match(reg)) {
+          for (let val of this.tableData) {
+            val.caiyanglv = this.global;
           }
-        ],
-        caiyanglv: [
-          { required: true, message: "此项不能为空", trigger: "blur" },
-          {
-            pattern: /^[1-9]\d*$/,
-            message: "请输入正整数",
-            trigger: "blur"
-          }
-        ],
-        cxshizhensx: [
-          { required: true, message: "此项不能为空", trigger: "blur" }
-        ],
-        cxshizhenxx: [
-          { required: true, message: "此项不能为空", trigger: "blur" }
-        ],
-        bhlshizhensx: [
-          { required: true, message: "此项不能为空", trigger: "blur" }
-        ],
-        bhlshizhensx: [
-          { required: true, message: "此项不能为空", trigger: "blur" }
-        ]
-      }
-    };
-  },
-  components: {
-    bread: () => import("../../common/bread")
-  },
-  created() {
-    this.getPrams();
-  },
-
-  methods: {
-    getPrams() {
-      let mbdw = ["m", "km/h", "g", "h", "逻辑值", "kg", "kg"];
-      http("/fcsjcspz/getFcsjcspzlist", "post").then(res => {
-        this.tableData = res;
-        //静态列
-        for (let index in this.tableData) {
-          this.tableData[index].mbdw = mbdw[index];
-        }
-      });
-    },
-    setting() {
-      const reg = /^\d+(\.{0,1}\d+){0,1}$/;
-      if (this.global.match(reg)) {
-        for (let val of this.tableData) {
-          val.caiyanglv = this.global;
-        }
-      } else {
-        this.$message.warning("请输入正整数");
-      }
-    },
-    save() {
-      http("/fcsjcspz/saveFcsjcspz", "post", this.tableData).then(res => {
-        this.$message.success("修改成功");
-        this.getPrams();
-      });
-    },
-    handleUpdate(index, row) {
-      this.showDialog = !this.showDialog;
-      Object.assign(this.dialogForm, row);
-      this.index = index;
-    },
-    ok() {
-      this.$refs["ruleForm"].validate(valid => {
-        if (valid) {
-          let settingData = this.dialogForm;
-          Object.assign(this.tableData[this.index], settingData);
-          this.showDialog = !this.showDialog;
         } else {
-          return false;
+          this.$message.warning("请输入正整数");
         }
-      });
+      },
+      save() {
+        http("/fcsjcspz/saveFcsjcspz", "post", this.tableData).then(res => {
+          this.$message.success("修改成功");
+          this.getPrams();
+        });
+      },
+      handleUpdate(index, row) {
+        this.showDialog = !this.showDialog;
+        Object.assign(this.dialogForm, row);
+        this.index = index;
+      },
+      ok() {
+        this.$refs["ruleForm"].validate(valid => {
+          if (valid) {
+            let settingData = this.dialogForm;
+            Object.assign(this.tableData[this.index], settingData);
+            this.showDialog = !this.showDialog;
+          } else {
+            return false;
+          }
+        });
+      }
     }
-  }
-};
+  };
 </script>
 <style lang="less" scoped>
-.operated {
-  margin-top: 10px;
-}
+  .operated {
+    margin-top: 10px;
+  }
 </style>
-
-

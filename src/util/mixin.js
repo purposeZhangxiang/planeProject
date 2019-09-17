@@ -1,9 +1,11 @@
-import { http } from '../api/http'
+import {
+    http
+} from '../api/http'
 export default {
     data() {
         /**
          * @param {navgroup} 动态导航菜单默认值
-          */
+         */
         return {
             username: '',
             navgroup: []
@@ -16,7 +18,7 @@ export default {
         getUserInfo() {
             http("/login/getloginuser", "get").then(res => {
                 this.username = res.username;
-                this.navgroup =res.menu
+                this.navgroup = res.menu
             });
         }
     }
@@ -94,7 +96,7 @@ export default {
 //                 router: { path: "/home/fdrBight" }
 //             },
 //             {
-//                 name: "单机履历信息",
+//                 name: "单机飞行情况",
 //                 router: { path: "/home/standMessage" }
 //             },
 //             // {
