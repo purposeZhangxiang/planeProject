@@ -105,7 +105,8 @@ export default {
       dialogFormVisible: false,
       active: 1,
       activeStatus: "",
-      description: ["导入成功", "计算中.."]
+      description: ["导入成功", "计算中.."],
+      websocket: null
     };
   },
   created() {
@@ -144,6 +145,8 @@ export default {
     },
     handleProgress() {
       this.dialogFormVisible = !this.dialogFormVisible;
+      // 初始化websoket
+      this.initWebsocket();
     },
     handleRemove(file, fileList) {},
     handleExceed(files, fileList) {
@@ -191,6 +194,25 @@ export default {
         arr.push(json);
       }
       return arr;
+    },
+    //websocket
+    initWebsocket() {
+      if ("WebSocket" in window) {
+        this.websocket = new ReconnectingWebSocket(wsUrl, null, {
+          debug: true,
+          maxReconnectAttempts: 4
+        });
+      } else if ("MozWebSocket" in window) {
+        this.websocket = new MozWebSocket(wsUrl);
+      } else {
+        this.websocket = new SockJS(wsUrl);
+      }
+      this.websocket.onopen = function(evnt) {
+        alert("websocket连接上");
+      };
+      this.websocket.onmessage = function(evnt) {
+        alert(evnt.data);
+      };
     }
   }
 };
