@@ -13,7 +13,8 @@ if (process.env.NODE_ENV === 'development') {
   // imgUrl = 'http://java2.kingwant.local:1234/attachment';
   // baseUrl = 'http://java2.kingwant.local:1234';
   // baseUrl = 'http://10.10.0.56:8080';//MENG
-  baseUrl = 'http://10.10.0.8:8080';//XIE
+  // baseUrl = 'http://vue.kingwant.com:8080'; 
+  baseUrl = 'http://10.10.0.8:8080'; //XIE
   wsUrl = "ws://10.10.0.8:8080/myWebSocketHandler";
 } else {
   //正式环境
@@ -27,4 +28,3 @@ export {
   imgUrl,
   wsUrl,
 }
-
