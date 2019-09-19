@@ -13,10 +13,13 @@ Vue.use(Element);
 //自定义全局css
 import './assets/style.css'
 
-import { Loading } from 'element-ui'
+import {
+  Loading
+} from 'element-ui'
 import axios from "axios";
 let loading;
-function startLoading() {    //使用Element loading-start 方法
+
+function startLoading() { //使用Element loading-start 方法
   loading = Loading.service({
     target: document.getElementsByClassName('route')[0],
     lock: true,
@@ -24,7 +27,8 @@ function startLoading() {    //使用Element loading-start 方法
     fullscreen: false
   })
 }
-function endLoading() {    //使用Element loading-close 方法
+
+function endLoading() { //使用Element loading-close 方法
   loading.close()
 }
 //请求数据拦截器
@@ -54,6 +58,21 @@ function endLoading() {    //使用Element loading-close 方法
 
 //引入font-face
 import './assets/font_face/iconfont.css'
+import {
+  request
+} from 'https';
+axios.interceptors.request.use(config => {
+    if (sessionStorage.getItem('token')) {
+      config.headers["Authorization"] = "Bearer " + sessionStorage.getItem('token');
+    } else {
+      router.push({
+        path: '/login'
+      });
+      return;
+    }
+    return config
+  },
+  err => Promise.reject(err));
 
 Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false
