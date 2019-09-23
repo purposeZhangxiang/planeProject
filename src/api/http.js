@@ -11,6 +11,19 @@ import {
 } from 'element-ui'; //elementUI错误弹框组件
 
 
+axios.interceptors.request.use(config => {
+    if (sessionStorage.getItem('token')) {
+        config.headers["Authorization"] = "Bearer " + sessionStorage.getItem('token');
+    } else if (router.currentRoute.path != "/login") {
+        router.push({
+            path: '/login'
+        });
+        return;
+    }
+    return config
+},
+    err => Promise.reject(err));
+
 
 //登陆
 const login = (apiName, method, data) => {
@@ -28,7 +41,7 @@ const login = (apiName, method, data) => {
             .then(res => {
                 if (res.data.hasOwnProperty("access_token")) {
                     resolve(res.data)
-                } else {}
+                } else { }
             })
             .catch(err => {
                 Message({

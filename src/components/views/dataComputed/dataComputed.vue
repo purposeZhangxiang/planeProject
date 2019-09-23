@@ -77,7 +77,6 @@
        * @param {dialogFormVisible}
        * @param {active}
        * @param {activeStatus}
-       * @param {description}
        * @param {}
        * @param {}
        */
@@ -98,7 +97,6 @@
         infomation: "",
         percent: 0,
         itemPercen: 0,
-        description: ["导入成功", "计算中.."],
         websocket: null,
       };
     },
@@ -143,8 +141,8 @@
         setTimeout(function () {
           var element = document.getElementById("loading_container");
           loadingServer = Loading.service({
-            target: element,
-            fullscreen: false,
+            target: document.body,
+            fullscreen: true,
             text: "飞参数据解析中",
             background: "rgba(0,0,0,0)"
           })
