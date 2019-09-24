@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
   //正式环境
   imgUrl = 'http://java2.kingwant.local:1234/attachment';
   baseUrl = 'http://life.kingwant.com';
-  wsUrl = "";
+  wsUrl = "ws://java2.kingwant.local/myWebSocketHandler";
 }
 
 export {
