@@ -223,7 +223,6 @@ export default {
     //新增
     submitForm() {
       this.tiTitle = "新增";
-      debugger;
       this.form = {};
       this.dialogVisible = true;
       this.$refs.form.clearValidate();
@@ -470,7 +469,6 @@ export default {
       this.multipleSelection = val;
     },
     handleClose1() {
-      debugger
       this.title = "";
       this.tiTitle = "";
     }

@@ -41,7 +41,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">搜索</el-button>
-          <el-button type="primary" @click="handleDownload">全部下载</el-button>
+          <el-button type="primary" @click="handleDownload" v-if="btnDownload">全部下载</el-button>
         </el-form-item>
         <el-form-item>
           <el-upload
@@ -52,7 +52,7 @@
             multiple
             :on-exceed="handleExceed"
           >
-            <el-button size="middle" type="primary">数据上报</el-button>
+            <el-button size="middle" type="primary" v-if="btnUpload">数据上报</el-button>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -104,21 +104,31 @@ export default {
         { label: "起落编号", prop: "qlbh" },
         { label: "飞参数据地址", prop: "fcsjwjdz" }
       ],
-      action: `${baseUrl}/data/updata`
+      action: `${baseUrl}/data/updata`,
+      //btnRole
+      btnDownload:false,
+      btnUpload:false
     };
   },
-  created(){
+  created() {
     //get router query
     // this.getData();
   },
   mounted() {
     this.getSelectOptions();
+    this.getBtnRole();
   },
   methods: {
-    getData(){
-      http("","",).then(res=>{
-
-      })
+    getBtnRole() {
+      http("/kwpermission/findperbyuser", "post").then(res => {
+        for (let val of res) {
+          if ((val.name == "飞参数据下载")) {
+            this.btnDownload = true;
+          } else if ((val.name == "飞参数据上报")) {
+            this.btnUpload = true;
+          }
+        }
+      });
     },
     getSelectOptions() {
       // 飞机编号
@@ -129,7 +139,7 @@ export default {
       http("/data/getunitnumber", "get").then(res => {
         this.unitOptions = res;
         //setting deafult
-        this.searchInput.unitnumber=this.unitOptions[0];
+        this.searchInput.unitnumber = this.unitOptions[0];
       });
     },
     search() {
