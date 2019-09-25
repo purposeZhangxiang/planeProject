@@ -102,7 +102,6 @@
             <el-input v-model="formLabelAlign.usernumber"></el-input>
           </el-form-item>
 
-
           <!--
           <el-form-item label="最大限制过载">
             <el-input v-model="formLabelAlign.maxoverdrive"></el-input>
@@ -251,7 +250,7 @@
           plantypeid: requiredRule,
           deliverytime: requiredRule,
 
-          unitmiddle: requiredRule,
+          // unitmiddle: requiredRule,
           fightweight: floatRules,
           emptyweight: floatRules,
           strengthweight: floatRules,
