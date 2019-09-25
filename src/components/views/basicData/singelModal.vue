@@ -59,10 +59,13 @@
             <el-date-picker v-model="formLabelAlign.deliverytime" type="date" placeholder="选择日期" style="width:100%">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="所属部队名称" prop>
+          <!--el-form-item label="所属部队名称" prop>
             <el-select v-model="value" placeholder="请选择" style="width: 100%">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
+          </el-form-item-->
+          <el-form-item label="部队编号" prop="required">
+            <el-input v-model="formLabelAlign.unitnumber"></el-input>
           </el-form-item>
           <el-form-item label="所属中队" prop="unitmiddle">
             <el-input v-model="formLabelAlign.unitmiddle"></el-input>
@@ -95,12 +98,11 @@
             <el-date-picker v-model="formLabelAlign.servicedate" type="date" placeholder="选择日期" style="width:100%">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="所属部队编号" prop="required">
-            <el-input v-model="formLabelAlign.unitnumber"></el-input>
-          </el-form-item>
           <el-form-item label="使用机号">
             <el-input v-model="formLabelAlign.usernumber"></el-input>
           </el-form-item>
+
+
           <!--
           <el-form-item label="最大限制过载">
             <el-input v-model="formLabelAlign.maxoverdrive"></el-input>
