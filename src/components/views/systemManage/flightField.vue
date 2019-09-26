@@ -13,9 +13,9 @@
         </el-form-item>
       </el-form>
     </div>
-    <p>
+    <p class="tips">
       此页面的任何操作需要点击
-      <span style="color:red;font-size:20px;">保存按钮</span>才会保存至数据库
+      <span style="color:red;font-size:18px;">保存按钮</span>才会保存至数据库
     </p>
     <!-- table -->
     <el-table :data="tableData">
@@ -68,138 +68,153 @@
 </template>
 
 <script>
-  import {
-    http
-  } from "../../../api/http";
+import { http } from "../../../api/http";
 
-  export default {
-    data() {
-      return {
-        nowLocation: ["系统管理", "飞参字段设置"],
-        global: "",
-        tableData: [],
-        showDialog: false,
-        index: "",
-        dialogForm: {
-          mingchen: "",
-          xianshiming: "",
-          duiyinglie: "",
-          caiyanglv: "",
-          cxshizhensx: "",
-          cxshizhenxx: "",
-          bhlshizhensx: ""
-        },
-        rules: {
-          mingchen: [{
+export default {
+  data() {
+    return {
+      nowLocation: ["系统管理", "飞参字段设置"],
+      global: "",
+      tableData: [],
+      showDialog: false,
+      index: "",
+      dialogForm: {
+        mingchen: "",
+        xianshiming: "",
+        duiyinglie: "",
+        caiyanglv: "",
+        cxshizhensx: "",
+        cxshizhenxx: "",
+        bhlshizhensx: ""
+      },
+      rules: {
+        mingchen: [
+          {
             required: true,
             message: "此项不能为空",
             trigger: "blur"
-          }],
-          xianshiming: [{
-            required: true,
-            message: "此项不能为空",
-            trigger: "blur"
-          }],
-          duiyinglie: [{
-              required: true,
-              message: "此项不能为空",
-              trigger: "blur"
-            },
-            {
-              pattern: /^[1-9]\d*$/,
-              message: "请输入正整数",
-              trigger: "blur"
-            }
-          ],
-          caiyanglv: [{
-              required: true,
-              message: "此项不能为空",
-              trigger: "blur"
-            },
-            {
-              pattern: /^[1-9]\d*$/,
-              message: "请输入正整数",
-              trigger: "blur"
-            }
-          ],
-          cxshizhensx: [{
-            required: true,
-            message: "此项不能为空",
-            trigger: "blur"
-          }],
-          cxshizhenxx: [{
-            required: true,
-            message: "此项不能为空",
-            trigger: "blur"
-          }],
-          bhlshizhensx: [{
-            required: true,
-            message: "此项不能为空",
-            trigger: "blur"
-          }],
-          bhlshizhensx: [{
-            required: true,
-            message: "此项不能为空",
-            trigger: "blur"
-          }]
-        }
-      };
-    },
-    components: {
-      bread: () => import("../../common/bread")
-    },
-    created() {
-      this.getPrams();
-    },
-
-    methods: {
-      getPrams() {
-        let mbdw = ["m", "km/h", "g", "h", "逻辑值", "kg", "kg"];
-        http("/fcsjcspz/getFcsjcspzlist", "post").then(res => {
-          this.tableData = res;
-          //静态列
-          for (let index in this.tableData) {
-            this.tableData[index].mbdw = mbdw[index];
           }
-        });
-      },
-      setting() {
-        const reg = /^\d+(\.{0,1}\d+){0,1}$/;
-        if (this.global.match(reg)) {
-          for (let val of this.tableData) {
-            val.caiyanglv = this.global;
+        ],
+        xianshiming: [
+          {
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
           }
-        } else {
-          this.$message.warning("请输入正整数");
-        }
-      },
-      save() {
-        http("/fcsjcspz/saveFcsjcspz", "post", this.tableData).then(res => {
-          this.$message.success("修改成功");
-          this.getPrams();
-        });
-      },
-      handleUpdate(index, row) {
-        this.showDialog = !this.showDialog;
-        Object.assign(this.dialogForm, row);
-        this.index = index;
-      },
-      ok() {
-        this.$refs["ruleForm"].validate(valid => {
-          if (valid) {
-            let settingData = this.dialogForm;
-            Object.assign(this.tableData[this.index], settingData);
-            this.showDialog = !this.showDialog;
-          } else {
-            return false;
+        ],
+        duiyinglie: [
+          {
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[1-9]\d*$/,
+            message: "请输入正整数",
+            trigger: "blur"
           }
-        });
+        ],
+        caiyanglv: [
+          {
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[1-9]\d*$/,
+            message: "请输入正整数",
+            trigger: "blur"
+          }
+        ],
+        cxshizhensx: [
+          {
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }
+        ],
+        cxshizhenxx: [
+          {
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }
+        ],
+        bhlshizhensx: [
+          {
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }
+        ],
+        bhlshizhensx: [
+          {
+            required: true,
+            message: "此项不能为空",
+            trigger: "blur"
+          }
+        ]
       }
+    };
+  },
+  components: {
+    bread: () => import("../../common/bread")
+  },
+  created() {
+    this.getPrams();
+  },
+
+  methods: {
+    getPrams() {
+      let mbdw = ["m", "km/h", "g", "h", "逻辑值", "kg", "kg"];
+      http("/fcsjcspz/getFcsjcspzlist", "post").then(res => {
+        this.tableData = res;
+        //静态列
+        for (let index in this.tableData) {
+          this.tableData[index].mbdw = mbdw[index];
+        }
+      });
+    },
+    setting() {
+      const reg = /^\d+(\.{0,1}\d+){0,1}$/;
+      if (this.global.match(reg)) {
+        for (let val of this.tableData) {
+          val.caiyanglv = this.global;
+        }
+      } else {
+        this.$message.warning("请输入正整数");
+      }
+    },
+    save() {
+      http("/fcsjcspz/saveFcsjcspz", "post", this.tableData).then(res => {
+        this.$message.success("修改成功");
+        this.getPrams();
+      });
+    },
+    handleUpdate(index, row) {
+      this.showDialog = !this.showDialog;
+      Object.assign(this.dialogForm, row);
+      this.index = index;
+    },
+    ok() {
+      this.$refs["ruleForm"].validate(valid => {
+        if (valid) {
+          let settingData = this.dialogForm;
+          Object.assign(this.tableData[this.index], settingData);
+          this.showDialog = !this.showDialog;
+        } else {
+          return false;
+        }
+      });
     }
-  };
+  }
+};
 </script>
 <style lang="less" scoped>
-  .operated {
-    margin-top: 10px;
-  }
+.operated {
+  margin-top: 10px;
+}
+.tips {
+  margin-bottom: 10px;
+}
 </style>

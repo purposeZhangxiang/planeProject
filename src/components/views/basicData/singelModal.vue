@@ -120,7 +120,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormCancel">取 消</el-button>
-        <el-button type="primary" @click="dialogOk">确 定</el-button>
+        <el-button type="primary" @click="dialogOk" v-if="dialogTitle!='查看' ">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 分页器 -->

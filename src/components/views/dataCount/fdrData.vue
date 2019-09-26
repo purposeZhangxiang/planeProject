@@ -167,12 +167,12 @@ export default {
 }
 
 .fdrBight .fdrList {
-  width: 10%;
+  /* width: 12%; */
   padding-right: 30px;
 }
 
 .fdrBight .fdrTable {
-  width: 90%;
+  width: 87%;
 }
 
 .el-table .cell {

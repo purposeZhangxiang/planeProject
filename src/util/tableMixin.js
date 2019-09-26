@@ -112,6 +112,7 @@ export default {
           }
         });
       }
+      debugger
     },
     handleSizeChange(val) {
       this.currentSize = val;
@@ -167,7 +168,6 @@ export default {
     },
     handleClose() {
       // this.$refs["ruleForm"].clearValidate();
-      debugger
       this.$refs.ruleForm.resetFields()
     },
  
