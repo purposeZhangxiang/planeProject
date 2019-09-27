@@ -260,7 +260,17 @@
           xAxis,
           yAxis,
           series,
-          dataZoom
+          dataZoom,
+          toolbox: {
+          show: true,
+          feature: {
+            saveAsImage: {
+              show: true,
+              excludeComponents: ["toolbox"],
+              pixelRatio: 2
+            }
+          }
+        },
         });
       },
       /**

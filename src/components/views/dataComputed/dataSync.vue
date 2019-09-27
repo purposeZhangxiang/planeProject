@@ -5,7 +5,7 @@
     <div class="serachInput">
       <el-form :inline="true" :model="searchInput" class="searchInput">
         <el-form-item label="部队编号">
-          <el-select clearable v-model="searchInput.unitnumber" placeholder="部队编号">
+          <el-select v-model="searchInput.unitnumber" placeholder="部队编号">
             <el-option v-for="(item,index) in unitOptions" :key="index" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
@@ -148,6 +148,10 @@ export default {
       json.factorynum = json.factorynum.join(",");
       json.starttime = this.dealTime(json.starttime);
       json.endtime = this.dealTime(json.endtime);
+      // if(!json.unitnumber){
+      //   this.$message.warning("请选择部队编号");
+      //   return;
+      // }
       http("/data/getsearchdownloadfile", "post", json).then(res => {
         this.tableData = res;
       });

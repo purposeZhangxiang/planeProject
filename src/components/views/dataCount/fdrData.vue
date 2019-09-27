@@ -167,8 +167,9 @@ export default {
 }
 
 .fdrBight .fdrList {
-  /* width: 12%; */
+  min-width: 12%;
   padding-right: 30px;
+  overflow:auto;
 }
 
 .fdrBight .fdrTable {

@@ -31,7 +31,7 @@
         <el-submenu v-if="item.sonmenu" :index="index+''">
           <template slot="title">
             <i :class="item.icon"></i>
-            <span slot="title">{{item.name}}</span>
+            <span slot="title" v-if="!isCollapse">{{item.name}}</span>
           </template>
           <el-menu-item
             v-for="(sonItem,sonIndex) in item.sonmenu"
