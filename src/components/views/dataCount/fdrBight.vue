@@ -250,7 +250,6 @@
           legend: {
             data: li
           },
-
           grid: {
             left: "3%",
             right: "4%",
@@ -267,7 +266,7 @@
             saveAsImage: {
               show: true,
               excludeComponents: ["toolbox"],
-              pixelRatio: 2
+              pixelRatio: 4
             }
           }
         },

@@ -15,7 +15,7 @@
     </div>
     <p class="tips">
       此页面的任何操作需要点击
-      <span style="color:red;font-size:18px;">保存按钮</span>才会保存至数据库
+      <span style="color:red;font-size:14px;">保存按钮</span>才会保存至数据库
     </p>
     <!-- table -->
     <el-table :data="tableData">
@@ -215,6 +215,7 @@ export default {
   margin-top: 10px;
 }
 .tips {
+  font-size: 12px;
   margin-bottom: 10px;
 }
 </style>
