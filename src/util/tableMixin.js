@@ -80,19 +80,19 @@ export default {
     dialogFormCancel() {
       this.dialogFormVisible = !this.dialogFormVisible;
     },
-    handleClose() {
-      this.clearFormStatus();
-    },
-    clearFormStatus() {
-      //置空所有input
-      for (let key in this.formLabelAlign) {
-        this.formLabelAlign[key] = "";
-      }
-      //置空fileList
-      if (this.hasOwnProperty("fileList")) {
-        this.fileList = [];
-      }
-    },
+    // handleClose() {
+    //   this.clearFormStatus();
+    // },
+    // clearFormStatus() {
+    //   //置空所有input
+    //   for (let key in this.formLabelAlign) {
+    //     this.formLabelAlign[key] = "";
+    //   }
+    //   //置空fileList
+    //   if (this.hasOwnProperty("fileList")) {
+    //     this.fileList = [];
+    //   }
+    // },
     dialogOk() {
       if (this.dialogTitle == "新增") {
         //表单验证阶段
@@ -112,7 +112,6 @@ export default {
           }
         });
       }
-      debugger
     },
     handleSizeChange(val) {
       this.currentSize = val;
@@ -167,10 +166,16 @@ export default {
       })
     },
     handleClose() {
-      // this.$refs["ruleForm"].clearValidate();
-      this.$refs.ruleForm.resetFields()
+      this.$refs["ruleForm"].resetFields()
+      if (this.formLabelAlign) {
+        for (let index in this.formLabelAlign) {
+          if (this.formLabelAlign[index] != "" || this.formLabelAlign[index] == null || this.formLabelAlign[index] == undefined) {
+            this.formLabelAlign[index] = "";
+          }
+        }
+      }
     },
- 
+
 
     // clearFormStatus() {
     //     //置空表单
